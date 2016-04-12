@@ -1,0 +1,12 @@
+﻿@using EniacSpi.Models;
+
+@{
+    ViewBag.Title = "Confirm Account";
+}
+<h2>@ViewBag.Title.</h2>
+<div>
+    <p>
+        Your account must be approved and confirmed by a local administrator. Please @Html.ActionLink("Click here to re-apply for access.", "ConfirmAccount", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+    </p>
+</div>
+

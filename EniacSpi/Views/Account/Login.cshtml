@@ -1,0 +1,116 @@
+﻿@model List<EniacSpi.Models.LoginViewUserModel>
+@using Microsoft.AspNet.Identity
+@section Scripts
+{
+    <script type="text/javascript" src="~/Scripts/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript">
+
+        (function () {
+            window.onresize = function () {
+                var width = $(document).width();
+                if (width < 768) {
+                    $('.users-main').each(function () {
+                        //$('#imgCircle').attr('class', '');
+                        $('#wrap').attr('class', 'col-md-12');
+                    });
+                } else {
+                    $('.users-main').each(function () {
+                        //$('#imgCircle').attr('class', 'col-md-4');
+                        $("#wrap").attr('class', 'col-md-8');
+                    });
+                }
+            };
+        }());
+
+        function SubmitUser() {
+            $(this).closest('form').submit();
+        }
+
+        function enter(elem) {
+            elem.style.backgroundColor = '#F8F8F8';
+        }
+
+        function leave(elem) {
+            elem.style.backgroundColor = '#FFFFFF';
+        }
+
+    </script>
+}
+<div class="loginPage content">
+    <h2> Login </h2>
+    @Html.ValidationMessage("failedLogin", "", new { @class = "text-danger validate" })
+    <div class="container-fluid ">
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+        {
+            for (int i = 0; i < Model.Count(); ++i)
+            {
+                <div class="users-main col-md-4 center-block" id="userDiv" onmouseover="enter(this)" onmouseout="leave(this)">
+                    <p>
+                        @if (Request.IsAuthenticated && Model[i].UserName == User.Identity.GetUserName())
+                        {
+                            using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-form" }))
+                            {
+                                @Html.AntiForgeryToken()
+
+                                <ul class="nav navbar-nav navbar-right">
+                                    <li>
+                                        @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+                                    </li>
+                                    <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+                                </ul>
+                            }
+                        }
+                        else
+                        {
+                            @Html.HiddenFor(m => m[i].Id)
+                            @Html.HiddenFor(m => m[i].UserName)
+
+                            <div class="" id="wrap">
+                                <div class="row text-center">
+                                    <div class="username" id="username">
+                                        <strong class="child"> @Model[i].UserName</strong>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="password">
+                                            <div>
+                                                @Html.PasswordFor(m => m[i].Password, new { @id = i + " Box", @class = "form-control pwbox", @placeholder = "Password" })
+                                                @Html.ValidationMessageFor(m => m[i].Password, "", new { @class = "text-danger validate" })
+
+                                                <script type="text/javascript" src="~/Scripts/jquery-2.1.4.min.js"></script>
+                                                <script type="text/javascript">
+                                                   (function () {
+                                                        $('#@i Box').keydown(function (event) {
+                                                            if (event.keyCode == 13) {
+                                                                $('#@i Button').submit();
+                                                            }
+                                                        });
+                                                    }());
+                                                </script>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="row checkbox center-block">
+                                                @Html.CheckBoxFor(m => m[i].RememberMe, new { @class = "checkbox" })
+                                                @Html.DisplayNameFor(m => m[i].RememberMe)
+                                            </div>
+                                        </div>
+                                        <div class="butt row center-block pull-right">
+                                            <div>
+                                                <button id="@i Button" type="submit" name="UserIndex" value=@i class="btn btn-default">
+                                                    Log In
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+                    </p>
+                </div>
+            }
+        }
+    </div>
+</div>

@@ -1,0 +1,108 @@
+.form-group {
+    margin-bottom: 5px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+    .form-group .checkbox {
+        margin-left: 20px;
+        margin-top: 3px;
+    }
+
+input,
+select,
+textarea {
+}
+
+.container {
+      border: 1px dashed #CCC;
+      position: relative;
+    }
+
+    .container > div {
+      background: #AAA;
+      position: absolute;
+      height: 100px;
+      width: 100px;
+    }
+
+    .container > .ss-placeholder-child {
+      background: transparent;
+      border: 1px dashed blue;
+    }
+
+.overlay {
+    background: rgba(0, 0, 0, 0.86);
+    position:fixed;
+    top: 0;
+    padding: 0;
+    margin: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+}
+
+.overlay .content {
+    float: none;
+    background: #fff;
+    height: 750px;
+    display: flex;
+    align-items: center;
+    padding: 60px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 3px;
+}
+
+.dropzone {
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 500px;
+    border: 2px dashed #ccc;
+    color: #ccc;
+    line-height: 500px;
+    text-align: center;
+}
+
+.checkbox, .radio {
+    margin-left: 20px;
+}
+
+.validate {
+    display: inline-block;
+    width:100%;
+}
+
+.form-group strong {
+    font-weight: 100;
+    font-size: 22px;
+    padding-top: 120px;
+}
+
+.form-control {
+    width: auto;
+}
+
+.password .form-control {
+    margin-top: 50px;
+    width: 100%;
+}
+
+.users-main {
+    height: 25rem;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+@media(max-width:768px) {
+    .users-main {
+        border: 1px solid #F8F8F8;
+        padding-right: 30px;
+        padding-left: 30px;
+        margin-left:-15px;
+    }
+}

@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.Title = "Confirm Email";
+}
+<h2>@ViewBag.Title.</h2>
+<div>
+    <p>
+        Your Email address must be confirmed. Please @Html.ActionLink("Click here to send an email confirmation message", "ConfirmEmail", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+    </p>
+</div>
+
+

@@ -1,0 +1,52 @@
+﻿@using Microsoft.AspNet.Identity
+
+<li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Home"  && !Request.Url.ToString().Contains("Admin") && !(ViewContext.RouteData.Values["Action"].ToString() == "Contact") && !(ViewContext.RouteData.Values["Action"].ToString() == "About") ? "active" : "")">
+    <a href=@Url.Action("Index", "Home", new { area = ""})><span class="glyphicon glyphicon-home pull-left"></span>Home</a>
+</li>
+<li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Board" ? "active" : "")">
+    <a href=@Url.Action("Index", "Board", new { area = ""})><span class="glyphicon glyphicon-th-large pull-left"></span>MyBoard</a>
+</li>
+<li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Module" && !Request.Url.ToString().Contains("Admin") ? "active" : "")">
+    <a href=@Url.Action("Index", "Module", new { area = ""})><span class="glyphicon glyphicon-list-alt pull-left"></span>Modules</a>
+</li>
+<li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Settings" ? "active" : "")">
+    <a href=@Url.Action("Index", "Settings", new { area = ""})><span class="glyphicon glyphicon-cog pull-left"></span>Settings</a>
+</li>
+@if (Request.GetOwinContext().Authentication.User.IsInRole("Administrator") || Request.GetOwinContext().Authentication.User.IsInRole("Moderator"))
+{
+    <li class="@(Request.Url.ToString().Contains("Admin") ? "active" : "")">
+        <a href=@Url.Action("Index", "Home", new { area = "Admin" })><span class="glyphicon glyphicon-cog pull-left"></span>Administrative tools</a>
+    </li>
+}
+<li class="@(ViewContext.RouteData.Values["Action"].ToString() == "About" ? "active" : "")">
+    <a href=@Url.Action("About", "Home", new { area = ""})><span class="glyphicon glyphicon-book pull-left"></span>About</a>
+</li>
+<li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Contact" ? "active" : "")">
+    <a href=@Url.Action("Contact", "Home", new { area = ""})><span class="glyphicon glyphicon-earphone pull-left"></span>Contact</a>
+</li>
+<li class="nav-divider"></li>
+<li>
+    @if (!Request.IsAuthenticated)
+    {
+        <button class="btn btn-default" onclick="location.href = '@Url.Action("Login", "Account", new { area = ""})';" style="margin-left: 30px;">
+            Login
+        </button>
+        <button class="btn btn-default" onclick="location.href = '@Url.Action("Register", "Account", new { area = ""})';">
+            Register
+        </button>
+    }
+    else
+    {
+        using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm", @class = "navbar-form" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", new { area = "" }, htmlAttributes: new { title = "Manage" })
+                </li>
+                <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+            </ul>
+        }
+    }
+</li>

@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Admin";
+}
+<p>
+    @ViewBag.Message
+</p>
+<div class="jumbotron">
+    <h2>Welcome!</h2>
+    <br \>
+    <p>
+        Welcome to the Admin-Area, from here you can manage users plugins and more!
+        <br \>
+        <br \>
+        <a class="btn btn-default btn-lg" href="@Url.Action("Index", "User")">Users</a>
+        <a class="btn btn-default btn-lg" href="@Url.Action("Index", "Module")">Modules</a>
+    </p>
+</div>
