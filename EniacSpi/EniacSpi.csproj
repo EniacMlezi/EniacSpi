@@ -215,19 +215,20 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
-    <Compile Include="Areas\Admin\Controllers\ModuleController.cs" />
-    <Compile Include="Areas\Admin\Models\ModuleViewModels.cs" />
+    <Compile Include="Areas\Admin\Controllers\HostController.cs" />
+    <Compile Include="Areas\Admin\Models\HostViewModels.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserController.cs" />
     <Compile Include="Controllers\BoardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\ModuleController.cs" />
+    <Compile Include="Controllers\HostController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\IModule.cs" />
-    <Compile Include="Interfaces\IModuleFinder.cs" />
+    <Compile Include="Interfaces\IHost.cs" />
+    <Compile Include="Interfaces\IHostFinder.cs" />
+    <Compile Include="Interfaces\IHostManager.cs" />
     <Compile Include="Migrations\201604120716443_Initial.cs" />
     <Compile Include="Migrations\201604120716443_Initial.Designer.cs">
       <DependentUpon>201604120716443_Initial.cs</DependentUpon>
@@ -242,10 +243,10 @@
     <Compile Include="Models\BoardViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\ModuleViewModels.cs" />
-    <Compile Include="Objects\Module.cs" />
-    <Compile Include="Objects\ModuleFinder.cs" />
-    <Compile Include="Objects\ModuleManager.cs" />
+    <Compile Include="Models\HostViewModels.cs" />
+    <Compile Include="Objects\Host.cs" />
+    <Compile Include="Objects\HostFinder.cs" />
+    <Compile Include="Objects\HostManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -280,7 +281,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\gridstack.js" />
     <Content Include="Scripts\gridstack.min.js" />
-    <Content Include="Areas\Admin\Views\Module\List.cshtml" />
+    <Content Include="Areas\Admin\Views\Host\List.cshtml" />
     <None Include="Scripts\jquery-2.2.2.intellisense.js" />
     <Content Include="Scripts\jquery-2.2.2.js" />
     <Content Include="Scripts\jquery-2.2.2.min.js" />
@@ -337,7 +338,7 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Collection.cshtml" />
     <Content Include="Areas\Admin\Views\User\List.cshtml" />
-    <Content Include="Views\Module\List.cshtml" />
+    <Content Include="Views\Host\List.cshtml" />
     <Content Include="Views\Board\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\ConfirmAccount.cshtml" />

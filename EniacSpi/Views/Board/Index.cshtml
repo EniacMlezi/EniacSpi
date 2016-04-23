@@ -46,7 +46,7 @@
 <div class="grid-stack">
     @foreach (var widget in Model.Widgets)
     {
-        <div id="@widget.Name"class="grid-stack-item"
+        <div id="@widget.Name" class="grid-stack-item"
          data-gs-x=@widget.PositionX data-gs-y=@widget.PositionY
          data-gs-width=2 data-gs-height=3>
             <div class="grid-stack-item-content">
@@ -62,7 +62,8 @@
                         </div>
                     </div>
                     <div class="panel-body">
-                        a widget somethin something
+                        a host somethin something
+                        <a href="@Url.Action("Index", "Host", new { Name = widget.Name })"> See full </a>
                     </div>
                     <div class="panel-footer">
                         @widget.Address
