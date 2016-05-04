@@ -1,9 +1,17 @@
-﻿namespace EniacSpi.Interfaces
+﻿using EniacSpi.Interfaces;
+using System.Collections.Generic;
+
+namespace EniacSpi.Interfaces
 {
     public interface IHost
     {
-        string Name { get; set; }
-        string Address { get; set; }
+        string Name { get; }
+        string Address { get; }
+
+        IEnumerable<INetworkInformation> AvailableNetworks { get; }
+        IEnumerable<IHostInformation> AvailableTargetHosts { get; }
+        INetworkInformation SelectedNetwork { get; set; }
+
         bool IsConnected { get; }
     }
 }

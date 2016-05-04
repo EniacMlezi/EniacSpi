@@ -140,8 +140,7 @@ namespace EniacSpi.Objects
             string[] ModuleInfo = state.sb.ToString().Split('|');
 
             // Create the host object.
-            IHost host = new Host(state.workSocket);
-            host.Name = ModuleInfo[0];
+            IHost host = new Host(state.workSocket, ModuleInfo[0]);
 
             HostManager.Current.Add(host);
         }

@@ -15,9 +15,9 @@ namespace EniacSpi.Objects
     {
         public HostManager()
         {
-            Modules = new List<IHost>();
+            Hosts = new List<IHost>();
             Thread connectedListener = new Thread(CheckConnected);
-            connectedListener.Start();
+            //connectedListener.Start();
         }
 
         private static void CheckConnected()
@@ -25,7 +25,7 @@ namespace EniacSpi.Objects
             while (true)
             {
                 System.Threading.Thread.Sleep(3000);
-                foreach (var module in Current.Modules.ToList())
+                foreach (var module in Current.Hosts.ToList())
                 {
                     if (!module.IsConnected)
                     {
@@ -42,24 +42,24 @@ namespace EniacSpi.Objects
             get { return _current ?? (_current = new HostManager()); }
         }
 
-        internal List<IHost> Modules { get; set; }
+        internal List<IHost> Hosts { get; set; }
 
-        public IEnumerable<IHost> GetModules()
+        public IEnumerable<IHost> GetHosts()
         {
-            return Modules;
+            return Hosts;
         }
 
-        public IHost GetModule(string name)
+        public IHost GetHost(string name)
         {
-            return GetModules().Where(m => m.Name == name).FirstOrDefault();
+            return GetHosts().Where(m => m.Name == name).FirstOrDefault();
         }
 
-        public void Add(IHost module)
+        public void Add(IHost host)
         {
-            if (HostManager.Current.GetModule(module.Name) == null)
+            if (HostManager.Current.GetHost(host.Name) == null)
             {
-                Modules.Add(module);
-                File.AppendAllText(@"C:\log.txt", System.DateTime.Now.ToString() + " -> [ModuleManager] Added Module: " + module.Name + Environment.NewLine);
+                Hosts.Add(host);
+                File.AppendAllText(@"C:\log.txt", System.DateTime.Now.ToString() + " -> [ModuleManager] Added Module: " + host.Name + Environment.NewLine);
             }
         }
 
@@ -73,12 +73,12 @@ namespace EniacSpi.Objects
 
         public void Delete(string name)
         {
-            Delete(GetModule(name));
+            Delete(GetHost(name));
         }
 
         public void Delete(IHost module)
         {
-            Modules.Remove(module);
+            Hosts.Remove(module);
         }
     }
 }

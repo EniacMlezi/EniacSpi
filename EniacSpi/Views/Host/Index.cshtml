@@ -1,0 +1,125 @@
+﻿@using EniacSpi.Objects
+@model EniacSpi.Models.HostViewModel
+
+@section Scripts{
+    <script type="text/javascript">
+        (function () {
+
+            $('#NetworkDropDownList').change(function () {
+                //$('#NetworkInformation').load('@Url.Action("NetworkInformation", "Host", new { Name=Model.Name})' + '&selectedMAC=' + $('#NetworkDropDownList option:selected').val());
+            });
+
+            $('#TargetHostDropDownList').change(function () {
+                //$('#TargetHostInformation').load('@Url.Action("TargetHostInformation", "Host", new { Name=Model.Name})' + '&selectedMAC=' + $('#TargetHostDropDownList option:selected').val());
+                $.get('@Url.Action("TargetHostInformation","Host", new { Name=Model.Name })', function (data) {
+                    $('#TargetHostInformation').replaceWith(data);
+                });
+            });
+        }());
+    </script>
+}
+
+<h3>Host - @Model.Name</h3>
+<hr />
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Network selection</h4>
+            @Html.DropDownList("NetworkDropDownList", Model.AvailableNetworkDropDownList, "--Select a network--")          
+            <div id="NetworkInformation">         
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h4>Network infiltration</h4>
+            <!--start button and progress bars here, probably some jquery signalr too-->
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <h4>Host selection</h4>
+            @Html.DropDownList("TargetHostDropDownList", Model.AvailableTargetHostsDropDownList, "--Select a target host--")
+            <div id="TargetHostInformation">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h4>Host traffic</h4>
+            <!--Big box o' dank traffic and a solution to save packages goes here-->
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+@*<div>
+        <h4>Host - model.Name</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Address)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Address)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.SelectedNetworkIndex)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.SelectedNetworkIndex)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.IsCracked)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.IsCracked)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.IsCracking)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.IsCracking)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.CrackProgress)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.CrackProgress)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.SelectedHostIndex)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.SelectedHostIndex)
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>*@

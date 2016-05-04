@@ -10,14 +10,17 @@ namespace EniacSpi.Areas.Admin.Controllers
     public class HostController : Controller
     {
         // GET: Admin/Module
-        public ActionResult Index()
+        public ActionResult Index(string Name)
         {
-            return RedirectToAction("List");
+            var host = HostManager.Current.GetHost(Name);
+
+
+            return View();
         }
 
         public ActionResult List()
         {
-            IEnumerable<IHost> hosts = HostManager.Current.GetModules();
+            IEnumerable<IHost> hosts = HostManager.Current.GetHosts();
             IEnumerable<HostListViewModel> model = hosts.Select(x => new HostListViewModel { Address = x.Address, Name = x.Name });
             return View(model);
         }

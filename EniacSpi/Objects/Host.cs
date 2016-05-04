@@ -10,11 +10,13 @@ namespace EniacSpi.Objects
 {
     public class Host : IHost
     {
-        public Host(Socket socket)
+        public Host(Socket socket, string name)
         {
             this.Socket = socket;
+            this.Name = name;
         }
 
+        public string Name { get; }
         public string Address
         {
             get
@@ -22,14 +24,39 @@ namespace EniacSpi.Objects
                 //return Socket.RemoteEndPoint.ToString();
                 return "test";
             }
+        }
 
-            set
+        public IEnumerable<INetworkInformation> AvailableNetworks
+        {
+            get
             {
-                throw new NotImplementedException();
+                var availableNetworks = new List<INetworkInformation>();
+                availableNetworks.Add(new NetworkInformation() { SSID = "testSSID", MAC = "TEST-AABBCC-DD1234", Security = "WPA/WPA2(test)", Signal = 10 });
+                return availableNetworks;
+            }
+        }
+        public IEnumerable<IHostInformation> AvailableTargetHosts
+        {
+            get
+            {
+                var availableTargetHosts = new List<IHostInformation>();
+                availableTargetHosts.Add(new HostInformation { MAC= "TEST-AABBCC-DD1235" });
+                return availableTargetHosts;
             }
         }
 
-        public string Name { get; set; }
+        public INetworkInformation SelectedNetwork
+        {
+            get
+            {
+                return new NetworkInformation() { SSID = "testSSID", MAC = "TEST-AABBCC-DD1234", Security = "WPA/WPA2(test)", Signal = 10 };
+            }
+
+            set
+            {
+                
+            }
+        }
 
         public bool IsConnected { get { return isConnected(this.Socket); } }
 
@@ -47,6 +74,6 @@ namespace EniacSpi.Objects
         }
 
 
-        public Socket Socket { get; set; }
+        public Socket Socket { get; set; }     
     }
 }
