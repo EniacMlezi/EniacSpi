@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EniacSpi", "EniacHome\EniacSpi.csproj", "{B875D32A-353F-4B26-BB27-90C4DEB50728}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EniacSpi", "EniacSpi\EniacSpi.csproj", "{B875D32A-353F-4B26-BB27-90C4DEB50728}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
