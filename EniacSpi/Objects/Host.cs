@@ -31,10 +31,12 @@ namespace EniacSpi.Objects
             get
             {
                 var availableNetworks = new List<INetworkInformation>();
-                availableNetworks.Add(new NetworkInformation() { SSID = "testSSID", MAC = "TEST-AABBCC-DD1234", Security = "WPA/WPA2(test)", Signal = 10 });
+                availableNetworks.Add(new NetworkInformation() { SSID = "testSSID", MAC = "TEST-AABBCC-DD1234", Security = "WPA/WPA2(test)", Signal = 10, CrackProgressStatus = 3, CrackProgressEnd = 10, IsCracking = true });
+                this.SelectedNetwork = availableNetworks.FirstOrDefault();
                 return availableNetworks;
             }
         }
+
         public IEnumerable<IHostInformation> AvailableTargetHosts
         {
             get
@@ -45,11 +47,13 @@ namespace EniacSpi.Objects
             }
         }
 
+        public IHostInformation SelectedTargetHost { get; set; }
+
         public INetworkInformation SelectedNetwork
         {
             get
             {
-                return new NetworkInformation() { SSID = "testSSID", MAC = "TEST-AABBCC-DD1234", Security = "WPA/WPA2(test)", Signal = 10 };
+                return new NetworkInformation() { SSID = "testSSID", MAC = "TEST-AABBCC-DD1234", Security = "WPA/WPA2(test)", Signal = 10, CrackProgressEnd = 100, CrackProgressStatus = 32, IsCracking = true  };
             }
 
             set
@@ -74,6 +78,6 @@ namespace EniacSpi.Objects
         }
 
 
-        public Socket Socket { get; set; }     
+        public Socket Socket { get; set; }
     }
 }

@@ -11,6 +11,7 @@ namespace EniacSpi.Interfaces
         IEnumerable<INetworkInformation> AvailableNetworks { get; }
         IEnumerable<IHostInformation> AvailableTargetHosts { get; }
         INetworkInformation SelectedNetwork { get; set; }
+        IHostInformation SelectedTargetHost { get; set; }
 
         bool IsConnected { get; }
     }

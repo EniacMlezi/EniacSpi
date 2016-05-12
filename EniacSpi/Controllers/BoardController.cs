@@ -17,7 +17,6 @@ namespace EniacSpi.Controllers
         public ActionResult Index()
         {
             Socket sock = new Socket(SocketType.Stream, ProtocolType.Tcp);
-            //sock.Connect("127.0.0.1", 33565);
 
             HostManager.Current.Add(new Host(sock, "testHost"));
             var hosts = HostManager.Current.GetHosts();           

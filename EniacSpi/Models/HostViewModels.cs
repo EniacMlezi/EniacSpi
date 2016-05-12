@@ -21,17 +21,12 @@ namespace EniacSpi.Models
         
         public IEnumerable<SelectListItem> AvailableNetworkDropDownList { get; set; }
         public INetworkInformation SelectedNetwork { get; set; }
-
-        public bool IsCracked { get; set; }
-        public bool IsCracking { get; set; }
-        public int CrackProgress { get; set; }
-
-        public IEnumerable<SelectListItem> AvailableHostsDropDownList { get; set; }  
+        
         public IEnumerable<SelectListItem> AvailableTargetHostsDropDownList { get; set; }
-        public int SelectedHost { get; set; }
+        public IHostInformation SelectedTargetHost { get; set; }
     }
 
-    public class HostNetworkInformation
+    public class HostNetworkInformationModel
     {
         public string SSID { get; set; }
         public string MAC { get; set; }
@@ -39,7 +34,15 @@ namespace EniacSpi.Models
         public int Signal { get; set; }
     }
 
-    public class HostTargetHostInformation
+    public class HostNetworkInfiltrationModel
+    {
+        public bool IsCracking { get; set; }
+        public int CrackProgressStatus { get; set; }
+        public int CrackProgressEnd { get; set; }
+        public string Password { get; set; }
+    }
+
+    public class HostTargetHostInformationModel
     {
         public string MAC { get; set; }
     }

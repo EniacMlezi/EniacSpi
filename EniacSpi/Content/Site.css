@@ -57,6 +57,11 @@ textarea {
     border-radius: 3px;
 }
 
+.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
 .dropzone {
     width: 500px;
     margin-left: auto;

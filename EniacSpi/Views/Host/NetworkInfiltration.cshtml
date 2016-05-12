@@ -1,0 +1,25 @@
+﻿@model EniacSpi.Models.HostNetworkInfiltrationModel
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            Progress
+        </dt>
+        <dd>
+            <progress value="@Model.CrackProgressStatus" max="@Model.CrackProgressEnd"></progress>
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Password)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Password)
+        </dd>
+    </dl>
+
+    @{
+        var State = Model.IsCracking ? "Stop" : "Start";
+    }
+    <button type="button" class="btn btn-default" href="@Url.Action("StartCracking", "Host", new { Name = ViewBag.HostName })" value="@State"></button>
+</div>
