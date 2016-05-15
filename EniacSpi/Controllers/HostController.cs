@@ -17,6 +17,19 @@ namespace EniacSpi.Controllers
     public class HostController : Controller
     {
 
+        private static IHostInformation nullSelectedTargetHost = new HostInformation { MAC = "N/A" };
+        private static INetworkInformation nullSelectedNetwork= new NetworkInformation
+        {
+            SSID = "N/A",
+            MAC = "N/A",
+            Security = "N/A",
+            Signal = 0,
+            CrackProgressEnd = 1,
+            CrackProgressStatus = 0,
+            IsCracking = false,
+            Password = "N/A"
+        };
+
         public ActionResult Index(string Name)
         {
             var host = HostManager.Current.GetHost(Name);
@@ -32,8 +45,19 @@ namespace EniacSpi.Controllers
                 Name = host.Name,
                 AvailableNetworkDropDownList = availableNetworkDropDownList ?? Enumerable.Empty<SelectListItem>(),
                 AvailableTargetHostsDropDownList = availableTargetHostDropDownList ?? Enumerable.Empty<SelectListItem>(),
-                SelectedNetwork = host.SelectedNetwork
+                SelectedNetwork = host.SelectedNetwork ?? nullSelectedNetwork,
+                SelectedTargetHost = host.SelectedTargetHost ?? nullSelectedTargetHost
+                
             };
+
+            return View(model);
+        }
+
+
+        public ActionResult List()
+        {
+            IEnumerable<IHost> hosts = HostManager.Current.GetHosts();
+            var model = hosts.Select(x => new HostListViewModel { Address = x.Address, Name = x.Name });
 
             return View(model);
         }
@@ -49,10 +73,10 @@ namespace EniacSpi.Controllers
 
             HostNetworkInformationModel model = new HostNetworkInformationModel
             {
-                SSID = "N/A",
-                MAC = "N/A",
-                Security = "N/A",
-                Signal = 0
+                SSID = nullSelectedNetwork.SSID,
+                MAC = nullSelectedNetwork.MAC,
+                Security = nullSelectedNetwork.Security,
+                Signal = nullSelectedNetwork.Signal
             };
 
             if (selectedNetwork != null)
@@ -64,7 +88,8 @@ namespace EniacSpi.Controllers
                     Security = selectedNetwork.Security,
                     Signal = selectedNetwork.Signal
                 };
-            }  
+            }
+            ViewBag.HostName = Name;
 
             return PartialView(model);
         }
@@ -79,10 +104,10 @@ namespace EniacSpi.Controllers
 
             var model = new HostNetworkInfiltrationModel
             {
-                CrackProgressEnd = 1,
-                CrackProgressStatus = 0,
-                IsCracking = false,
-                Password = "N/A"
+                CrackProgressEnd = nullSelectedNetwork.CrackProgressEnd,
+                CrackProgressStatus = nullSelectedNetwork.CrackProgressStatus,
+                IsCracking = nullSelectedNetwork.IsCracking,
+                Password = nullSelectedNetwork.Password
             };
 
             if (selectedNetwork != null)
@@ -111,7 +136,7 @@ namespace EniacSpi.Controllers
 
             HostTargetHostInformationModel model = new HostTargetHostInformationModel
             {
-                MAC = "N/A"
+                MAC = nullSelectedTargetHost.MAC
             };
 
             if (selectedTargetHost != null)
@@ -123,6 +148,19 @@ namespace EniacSpi.Controllers
             }
 
             return PartialView(model);
+        }
+
+        public ActionResult SelectNetwork(string Name, string selectedMAC)
+        {
+            var host = HostManager.Current.GetHost(Name);
+
+            if (host == null)
+                return RedirectToAction("Index", new { Name = Name });
+
+            //host.SelectedNetwork.StopCracking
+            host.SelectedNetwork = host.AvailableNetworks.Where(x => x.MAC == selectedMAC).FirstOrDefault();
+
+            return RedirectToAction("Index", new { Name = Name });
         }
 
         public ActionResult StartCracking(string Name)
@@ -147,28 +185,6 @@ namespace EniacSpi.Controllers
             //stop cracking!!
 
             return new HttpStatusCodeResult(HttpStatusCode.Accepted);
-        }
-
-        public ActionResult SelectNetwork(string Name, string selectedMAC)
-        {
-            var host = HostManager.Current.GetHost(Name);
-
-            if (host == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            host.SelectedNetwork = host.AvailableNetworks.Where(x => x.MAC == selectedMAC).FirstOrDefault();
-            if (host.SelectedNetwork == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);          
-           
-            return new HttpStatusCodeResult(HttpStatusCode.Accepted);
-        }
-
-        public ActionResult List()
-        {
-            IEnumerable<IHost> hosts = HostManager.Current.GetHosts();
-            var model = hosts.Select(x => new HostListViewModel { Address = x.Address, Name = x.Name });
-                   
-            return View(model);
         }
     }
 }
