@@ -1,38 +1,42 @@
 ﻿@model EniacSpi.Models.HostNetworkInformationModel
-
-<div>
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.SSID)
-        </dt>
-
-        <dd>
+<br />
+<table>
+    <tr>
+        <td style="padding-right:20px">
+            <b>@Html.DisplayNameFor(model => model.SSID)</b>
+        </td>
+        <td>
             @Html.DisplayFor(model => model.SSID)
-        </dd>
+        </td>
+    </tr>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.MAC)
-        </dt>
-
-        <dd>
+    <tr>
+        <td style="padding-right:20px">
+            <b>@Html.DisplayNameFor(model => model.MAC)</b>
+        </td>
+        <td>
             @Html.DisplayFor(model => model.MAC)
-        </dd>
+        </td>
+    </tr>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Security)
-        </dt>
-
-        <dd>
+    <tr>
+        <td style="padding-right:20px">
+            <b>@Html.DisplayNameFor(model => model.Security)</b>
+        </td>
+        <td>
             @Html.DisplayFor(model => model.Security)
-        </dd>
+        </td>
+    </tr>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Signal)
-        </dt>
-
-        <dd>
+    <tr>
+        <td style="padding-right:20px">
+            <b>@Html.DisplayNameFor(model => model.Signal)</b>
+        </td>
+        <td>
             @Html.DisplayFor(model => model.Signal)
-        </dd>
-
-    </dl>
-</div>
+        </td>
+    </tr>
+</table>
+<br />
+<a id="SelectNetworkButton" class="btn btn-default" href="@Url.Action("SelectNetwork", "Host", new { Name = ViewBag.HostName, selectedMAC = Model.MAC})">Select</a>
+<br />
