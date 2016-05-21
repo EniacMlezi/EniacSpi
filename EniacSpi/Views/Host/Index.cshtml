@@ -77,7 +77,7 @@
             <h4>Target Host selection</h4>
             @Html.DropDownList("TargetHostDropDownList", Model.AvailableTargetHostsDropDownList, "--Select a target host--")
             <div id="TargetHostInformation">
-                @Html.Action("TargetHostInformation", "Host", new { Name = Model.Name, selectedMAC = Model.SelectedTargetHost.MAC ?? null })               
+                @Html.Action("TargetHostInformation", "Host", new { Name = Model.Name, selectedMAC = (Model.SelectedTargetHost != null) ? Model.SelectedTargetHost.MAC : null })               
             </div>
         </div>
         <div class="col-md-8">
