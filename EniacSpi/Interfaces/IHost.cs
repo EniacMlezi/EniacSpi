@@ -6,6 +6,8 @@ namespace EniacSpi.Interfaces
 {
     public interface IHost
     {
+        WPAcrack WPAcrack { get; }
+
         string Name { get; }
         string Address { get; }
 
@@ -13,6 +15,9 @@ namespace EniacSpi.Interfaces
         IEnumerable<IHostInformation> AvailableTargetHosts { get; }
         INetworkInformation SelectedNetwork { get; set; }
         IHostInformation SelectedTargetHost { get; set; }
+
+        void StartCracking();
+        void StopCracking();
 
         bool IsConnected { get; }
     }

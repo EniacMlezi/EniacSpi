@@ -24,4 +24,4 @@
     var State = Model.IsCracking ? "Stop" : "Start";
 }
 <br />
-<a class="btn btn-default" href="@Url.Action(State + "Cracking", "Host", new { Name = ViewBag.HostName })">@State Cracking</a>
+<a id="CrackBtn" class="btn btn-default" href="@Url.Action(State + "Cracking", "Host", new { Name = ViewBag.HostName })">@State Cracking</a>

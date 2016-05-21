@@ -168,11 +168,12 @@ namespace EniacSpi.Controllers
             var host = HostManager.Current.GetHost(Name);
 
             if (host == null || host.SelectedNetwork == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            
-            //start cracking!!
+                return RedirectToAction("Index", new { Name = Name });
 
-            return new HttpStatusCodeResult(HttpStatusCode.Accepted);
+            //start cracking!!
+            host.StartCracking();
+
+            return RedirectToAction("Index", new { Name = Name });
         }
 
         public ActionResult StopCracking(string Name)
@@ -180,11 +181,12 @@ namespace EniacSpi.Controllers
             var host = HostManager.Current.GetHost(Name);
 
             if (host == null || host.SelectedNetwork == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", new { Name = Name });
 
             //stop cracking!!
+            host.StopCracking();
 
-            return new HttpStatusCodeResult(HttpStatusCode.Accepted);
+            return RedirectToAction("Index", new { Name = Name });
         }
     }
 }

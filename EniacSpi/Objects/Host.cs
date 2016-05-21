@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using oclHashcatNet.Objects;
+using System.IO;
 
 namespace EniacSpi.Objects
 {
@@ -15,6 +16,7 @@ namespace EniacSpi.Objects
         {
             this.Socket = socket;
             this.Name = name;
+            this.WPAcrack = new WPAcrack();
         }
 
         public WPAcrack WPAcrack { get; }
@@ -63,6 +65,26 @@ namespace EniacSpi.Objects
             {
                 
             }
+        }
+
+        public void StartCracking()
+        {
+            // download /this.Name/this.SelectedNetwork.MAC/capture.extension as tempCapture.extension to C:/Hashcat/
+
+            //ensure the correct capture file is in place
+            if (File.Exists(@"c:\Hashcat\capture.hccap"))
+            {
+                File.Delete(@"c:\Hashcat\capture.hccap");
+            }
+            File.Move(@"c:\Hashcat\tempCapture.hccap", @"c:\Hashcat\capture.hccap");
+
+            //start cracking
+            this.WPAcrack.Start();
+        }
+
+        public void StopCracking()
+        {
+            this.WPAcrack.Stop();
         }
 
         public bool IsConnected { get { return isConnected(this.Socket); } }

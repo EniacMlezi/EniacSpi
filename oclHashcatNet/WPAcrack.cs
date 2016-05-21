@@ -112,6 +112,8 @@ namespace oclHashcatNet.Objects
             hcBruteForceProcess.Kill();
             hcBruteForceProcess.WaitForExit();
             hcBruteForceProcess.Close();
+
+            this.Status = new WPACrackStatus();
         }
 
         private void HCOutputHandler(object sender, DataReceivedEventArgs e)
