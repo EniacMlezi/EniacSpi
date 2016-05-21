@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using oclHashcatNet.Objects;
 
 namespace EniacSpi.Objects
 {
@@ -15,6 +16,8 @@ namespace EniacSpi.Objects
             this.Socket = socket;
             this.Name = name;
         }
+
+        public WPAcrack WPAcrack { get; }
 
         public string Name { get; }
         public string Address

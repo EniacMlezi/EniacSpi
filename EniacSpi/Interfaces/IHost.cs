@@ -1,4 +1,5 @@
 ﻿using EniacSpi.Interfaces;
+using oclHashcatNet.Objects;
 using System.Collections.Generic;
 
 namespace EniacSpi.Interfaces

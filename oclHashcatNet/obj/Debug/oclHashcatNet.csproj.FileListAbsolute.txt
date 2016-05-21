@@ -1,0 +1,5 @@
+C:\Users\larsg\Documents\Visual Studio 2015\Projects\Hashcat\oclHashcatNet\bin\Debug\oclHashcatNet.dll
+C:\Users\larsg\Documents\Visual Studio 2015\Projects\Hashcat\oclHashcatNet\bin\Debug\oclHashcatNet.pdb
+C:\Users\larsg\Documents\Visual Studio 2015\Projects\Hashcat\oclHashcatNet\obj\Debug\oclHashcatNet.csprojResolveAssemblyReference.cache
+C:\Users\larsg\Documents\Visual Studio 2015\Projects\Hashcat\oclHashcatNet\obj\Debug\oclHashcatNet.dll
+C:\Users\larsg\Documents\Visual Studio 2015\Projects\Hashcat\oclHashcatNet\obj\Debug\oclHashcatNet.pdb
