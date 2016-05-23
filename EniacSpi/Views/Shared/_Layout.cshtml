@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNet.Identity
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -21,13 +22,16 @@
 <body id="background">
     <nav class="navbar navbar-default navbar-fixed-top" id="navbar-style">
         <div class="navbar-header"id="navBrand" >
-            <a class="navbar-brand"  href="#">Brand</a>
+            <a class="navbar-brand"  href="#"><img src="~/Content/Images/EniacLogo.png"/></a>            
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="navbar-left">
+                <label id="navTitle">EniacSpi</label>
+            </div>
             @if (Request.IsAuthenticated)
             {
             <ul class="nav navbar-nav navbar-right">
-                <li>Hello, EniacBlue!</li>
+                <li>Hello, @User.Identity.GetUserName()!</li>
                 <li id="logoffBtn">
                     <a href="@Url.Action("LogOff", "Account")">
                         <span class="glyphicon glyphicon-log-out"></span>

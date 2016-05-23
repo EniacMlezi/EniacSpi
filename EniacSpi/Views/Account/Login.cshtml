@@ -13,15 +13,15 @@
 <div class="loginPage content">
     <div class="modal-dialog">
         <div class="loginmodal-container">
-            <h1>Login to Your Account</h1><br>
+            <h1>Login to Your Account</h1><br>          
             @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
-            {
+            { 
                 @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @placeholder = "Username" })
-                @Html.PasswordFor(model => model.Password, new { @class = "form-control pwbox", @placeholder = "Password" })
+                @Html.PasswordFor(model => model.Password, new { @class = "form-control", @placeholder = "Password" })<br />
                 <input type="submit" name="login" class="login loginmodal-submit" value="Login">
             }
             <div class="login-help">
-                <a href="#">Forgot Password</a>
+                <a href="@Url.Action("ForgotPassword","Account")">Forgot Password?</a>
             </div>
         </div>
     </div>

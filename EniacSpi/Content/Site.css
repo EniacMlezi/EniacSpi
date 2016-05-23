@@ -1,10 +1,10 @@
 @import url(http://fonts.googleapis.com/css?family=Roboto);
 
 #background {
-    background-color: rgb(119,119,119);
+    background-color: rgb(29,29,29);
 }
 .navbar-default {
-    background-color : rgb(83,83,83);
+    background-color : rgb(65,65,65);
     color: aqua;
     line-height: 50px;
 }
@@ -15,6 +15,20 @@
     color: rgb(119,119,119)
 }
 
+.navbar .divider-vertical {
+    height: 40px;
+    margin: 0 9px;
+    border-left: 1px solid #f2f2f2;
+    border-right: 1px solid #ffffff;
+}
+#navTitle {
+    color: #fff;
+    font-weight: 200;
+    line-height: 0px;
+    font-family: roboto;
+    margin-left: 10px;
+    font-size: 18px;
+}
 #navbar-style {
     align-content: center;
     border-bottom: solid 1px black;    
@@ -25,6 +39,11 @@
 #navBrand {
     border-right: 1px solid black;
     background-color: rgb(0,163,218);
+    line-height: 0px;
+}
+#navBrand img{
+    height: 200%;
+    margin-top: -10px;
 }
 #logoffBtn {
     padding-right: 12px;
@@ -34,27 +53,6 @@
 }
 #logoffBtn:hover {
     background-color: rgb(0,163,218);
-}
-.sub-container{
-    
-}
-
-#login{
-    padding-right: 0px;
-    float: none;
-    align-items: center;
-    display: flex;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 60px;
-}
-
-#userbox {
-    margin-top: 75px;
-}
-
-#passbox {
-    margin-top: 10px;
 }
 
 body { padding-top: 75px; }
@@ -100,17 +98,11 @@ body { padding-top: 75px; }
     margin-top: 30px;
 }
 
-.vcenter {
-    display: inline-block;
-    vertical-align: middle;
-    float: none;
-}
-
 .loginmodal-container {
   padding: 30px;
   max-width: 350px;
   width: 100% !important;
-  background-color: rgb(83,83,83);
+  background-color: rgb(65,65,65);
   margin: 0 auto;
   border-radius: 2px;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
@@ -119,6 +111,7 @@ body { padding-top: 75px; }
 }
 
 .loginmodal-container h1 {
+  color: #fff;
   text-align: center;
   font-size: 1.8em;
   font-family: roboto;
@@ -132,15 +125,16 @@ body { padding-top: 75px; }
 }
 
 .loginmodal-container input[type=text], input[type=password] {
+  /*color: #fff;*/
   height: 44px;
   font-size: 16px;
   width: 100%;
   margin-bottom: 10px;
   -webkit-appearance: none;
   background: #fff;
-  border: 1px solid #d9d9d9;
-  border-top: 1px solid #c0c0c0;
-  /* border-radius: 2px; */
+  border: 0px solid rgb(29,29,29);
+  border-top: 0px solid rgb(29,29,29);
+  border-radius: 0px;
   padding: 0 8px;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -149,6 +143,7 @@ body { padding-top: 75px; }
 .loginmodal-container input[type=text]:hover, input[type=password]:hover {
   border: 1px solid #b9b9b9;
   border-top: 1px solid #a0a0a0;
+  border-left: 0px;
   -moz-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
   -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
   box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
@@ -188,11 +183,11 @@ body { padding-top: 75px; }
 
 .loginmodal-container a {
   text-decoration: none;
-  color: #666;
-  font-weight: 400;
+  color: #fff;
+  font-weight: 300;
   text-align: center;
   display: inline-block;
-  opacity: 0.6;
+  opacity: 1;
   transition: opacity ease 0.5s;
 } 
 

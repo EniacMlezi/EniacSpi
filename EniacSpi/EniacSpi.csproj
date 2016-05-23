@@ -261,6 +261,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Dashboard.css" />
     <Content Include="Content\gridstack.css" />
+    <Content Include="Content\Images\EniacLogo.png" />
     <Content Include="Content\Menu.css" />
     <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />

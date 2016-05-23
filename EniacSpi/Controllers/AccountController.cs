@@ -109,6 +109,7 @@ namespace EniacSpi.Controllers
                 switch (result)
                 {
                     case SignInStatus.Success:
+                        //ViewBag.Username = model.UserName;
                         return RedirectToLocal(returnUrl);
                     case SignInStatus.LockedOut:
                         return View("Lockout");
