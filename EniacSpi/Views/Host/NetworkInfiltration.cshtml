@@ -1,5 +1,6 @@
 ﻿@model EniacSpi.Models.HostNetworkInfiltrationModel
 
+
 <table>
     <tr>
         <td style="padding-right:20px">
@@ -24,4 +25,36 @@
     var State = Model.IsCracking ? "Stop" : "Start";
 }
 <br />
-<a id="CrackBtn" class="btn btn-default" href="@Url.Action(State + "Cracking", "Host", new { Name = ViewBag.HostName })">@State Cracking</a>
+<script type="text/javascript">
+    currentState = "@State";
+    function errorHandler(result)
+    {
+        alert(result);
+    }
+
+    function crack()
+    {
+        $("#CrackBtn").unbind();
+        $("#CrackBtn").addClass("disabled");
+
+        $.ajax({
+            type: "GET",
+            url: "/Host/" + currentState+ "Cracking?Name=" + "@ViewBag.HostName",
+            cache: false,
+            data: { Name: "@ViewBag.HostName" },
+            success: function (result) {
+                if (currentState == "Start") {
+                    currentState = "Stop";
+                }
+                else {
+                    currentState = "Start";
+                }
+
+                $("#CrackBtn").text(currentState + " Cracking");
+                $("#CrackBtn").removeClass("disabled");
+                $("#CrackBtn").bind();
+            }
+        });
+    }
+</script>
+<a id="CrackBtn" class="btn btn-default" onclick="crack()">@State Cracking</a>

@@ -1,5 +1,5 @@
 ﻿using EniacSpi.Interfaces;
-using oclHashcatNet.Objects;
+using oclHashcatNet.Extensions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -17,8 +17,9 @@ namespace EniacSpi.Interfaces
         INetworkInformation SelectedNetwork { get; set; }
         IHostInformation SelectedTargetHost { get; set; }
 
-        Task StartCracking();
+        Task<string> StartCracking();
         void StopCracking();
+        bool IsCracking { get; set; }
 
         bool IsConnected { get; }
     }

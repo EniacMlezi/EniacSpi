@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace oclHashcatNet.Objects
+namespace oclHashcatNet.Extensions
 {
     public class WPAcrack
     {
@@ -80,7 +78,10 @@ namespace oclHashcatNet.Objects
         {
             status = new WPACrackStatus();
             hcOutput = new StringBuilder("");
+        }
 
+        public void Start()
+        {
             //prepare hashcat bruteforce process
             hcBruteForceProcess = new Process();
             hcBruteForceProcess.StartInfo.UseShellExecute = false;
@@ -93,15 +94,11 @@ namespace oclHashcatNet.Objects
             hcBruteForceProcess.OutputDataReceived += HCOutputHandler;
             hcBruteForceProcess.ErrorDataReceived += HCErrorHandler;
             hcBruteForceProcess.Exited += HCExited;
-        }
-
-        public void Start()
-        {
-            hcBruteForceProcess.Start();
+            hcBruteForceProcess.Start(); //start
             hcBruteForceProcess.BeginOutputReadLine();
             hcBruteForceProcess.BeginErrorReadLine();
 
-            started.WaitOne();
+            started.WaitOne(); // wait dor 'STARTED' output
         }
 
         public void Stop()
@@ -109,10 +106,16 @@ namespace oclHashcatNet.Objects
             if (this.Status.Condition == WPAcrackCondition.Stopped)
                 return;
 
-            hcBruteForceProcess.Kill();
-            hcBruteForceProcess.WaitForExit();
-            hcBruteForceProcess.Close();
+            if (ProcessExtensions.IsRunning(hcBruteForceProcess))
+            {
+                hcBruteForceProcess.Kill();
+                hcBruteForceProcess.WaitForExit();
+                hcBruteForceProcess.Close();
+            }
 
+            //stopped.WaitOne();
+
+            //refresh status
             this.Status = new WPACrackStatus();
         }
 

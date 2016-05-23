@@ -40,7 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LineReader.cs" />
+    <Compile Include="Extensions\ProcessExtensions.cs" />
+    <Compile Include="Extensions\LineReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WPAcrack.cs" />
     <Compile Include="WPACrackStatus.cs" />

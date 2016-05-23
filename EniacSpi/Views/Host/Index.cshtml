@@ -2,6 +2,15 @@
 @model EniacSpi.Models.HostViewModel
 
 @section Scripts{
+
+    @if(!String.IsNullOrEmpty(ViewBag.Message))
+    {
+    <script type="text/javascript">
+        (function() {
+            alert('@ViewBag.Message');
+        } ());
+    </script>
+    }
     <script type="text/javascript">
         function CheckSelectedNetwork(){
             if( (@Html.Raw(Model.SelectedNetwork != null).ToString().ToLower()) ) {
@@ -59,16 +68,16 @@
     <div class="row">
         <div class="col-sm-6">
             <h4>Network selection</h4>
-            @Html.DropDownList("NetworkDropDownList", Model.AvailableNetworkDropDownList, "--Select a target network--")          
+            @Html.DropDownList("NetworkDropDownList", Model.AvailableNetworkDropDownList, "--Select a target network--")
             <div id="NetworkInformation">
-                @Html.Action("NetworkInformation", "Host", new { Name = Model.Name, selectedMAC = Model.SelectedNetwork.MAC} ?? null)  
+                @Html.Action("NetworkInformation", "Host", new { Name = Model.Name, selectedMAC = Model.SelectedNetwork.MAC} ?? null)
             </div>
         </div>
         <div class="col-sm-6">
             <h4>Network infiltration</h4>
             <div id="NetworkInfiltration">
-                @Html.Action("NetworkInfiltration", "Host", new { Name = Model.Name, selectedMAC = Model.SelectedNetwork.MAC ?? null })     
-            </div>       
+                @Html.Action("NetworkInfiltration", "Host", new { Name = Model.Name, selectedMAC = Model.SelectedNetwork.MAC ?? null })
+            </div>
         </div>
     </div>
     <hr />
@@ -77,7 +86,7 @@
             <h4>Target Host selection</h4>
             @Html.DropDownList("TargetHostDropDownList", Model.AvailableTargetHostsDropDownList, "--Select a target host--")
             <div id="TargetHostInformation">
-                @Html.Action("TargetHostInformation", "Host", new { Name = Model.Name, selectedMAC = (Model.SelectedTargetHost != null) ? Model.SelectedTargetHost.MAC : null })               
+                @Html.Action("TargetHostInformation", "Host", new { Name = Model.Name, selectedMAC = (Model.SelectedTargetHost != null) ? Model.SelectedTargetHost.MAC : null })
             </div>
         </div>
         <div class="col-md-8">

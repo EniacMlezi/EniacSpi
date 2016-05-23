@@ -5,10 +5,12 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using oclHashcatNet.Objects;
+using oclHashcatNet.Extensions;
 using System.IO;
 using System.Web;
 using Dropbox.Api;
+using Dropbox.Api.Babel;
+using Dropbox.Api.Files;
 
 namespace EniacSpi.Objects
 {
@@ -47,33 +49,45 @@ namespace EniacSpi.Objects
 
         public INetworkInformation SelectedNetwork { get; set; }
 
-        public async Task StartCracking()
+        public async Task<string> StartCracking()
         {
+            if (this.IsCracking)
+                StopCracking();
+            
             // download /this.Name/this.SelectedNetwork.MAC/capture.extension as tempCapture.extension to C:/Hashcat/
             var dropboxClient = HttpContext.Current.Application["DropboxClient"] as DropboxClient;
-
-            using (var response = await dropboxClient.Files.DownloadAsync(new Dropbox.Api.Files.DownloadArg(String.Format("/{0}/{1}/tempCapture.hccap", this.Name, this.SelectedNetwork.MAC))))
+            try
             {
+                var response = await dropboxClient.Files.DownloadAsync(new Dropbox.Api.Files.DownloadArg(String.Format("/{0}/{1}/capture.hccap", this.Name, this.SelectedNetwork.MAC)));
+
                 var contentBytes = await response.GetContentAsByteArrayAsync();
-                FileStream fileStream = System.IO.File.Create(@"c:\Hashcat\tempCapture.hccap", (int)contentBytes.Length);
+                FileStream fileStream = System.IO.File.Create(@"c:\Hashcat\capture.hccap", (int)contentBytes.Length);
                 fileStream.Write(contentBytes, 0, contentBytes.Length);
+                fileStream.Close();
             }
-
-            // ensure the correct capture file is in place
-            if (System.IO.File.Exists(@"c:\Hashcat\capture.hccap"))
+            catch (ApiException<DownloadError.Path> ex)
             {
-                System.IO.File.Delete(@"c:\Hashcat\capture.hccap");
+                return String.Format("{0}: The hccap file does not exist in the dropbox archive. Try again later.", ex.HResult);
             }
-            System.IO.File.Move(@"c:\Hashcat\tempCapture.hccap", @"c:\Hashcat\capture.hccap");
+            catch (Exception ex)
+            {
+                return String.Format("{0}: {1}", ex.HResult, ex.Message);
+            }
 
             // start cracking
             this.WPAcrack.Start();
+            this.IsCracking = true;
+
+            return "Success";
         }
 
         public void StopCracking()
         {
             this.WPAcrack.Stop();
+            this.IsCracking = false;
         }
+
+        public bool IsCracking { get; set; }
 
         public bool IsConnected { get { return isConnected(this.Socket); } }
 

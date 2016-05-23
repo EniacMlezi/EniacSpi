@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace oclHashcatNet.Objects
+namespace oclHashcatNet.Extensions
 {
     public enum WPAcrackCondition
     {

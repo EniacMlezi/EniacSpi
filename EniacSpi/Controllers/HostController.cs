@@ -163,17 +163,15 @@ namespace EniacSpi.Controllers
             return RedirectToAction("Index", new { Name = Name });
         }
 
-        public async Task<ActionResult> StartCracking(string Name)
+        public async Task<string> StartCracking(string Name)
         {
             var host = HostManager.Current.GetHost(Name);
 
             if (host == null || host.SelectedNetwork == null)
-                return RedirectToAction("Index", new { Name = Name });
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError).ToString();
 
             //start cracking!!
-            await host.StartCracking();
-
-            return RedirectToAction("Index", new { Name = Name });
+            return await host.StartCracking();
         }
 
         public ActionResult StopCracking(string Name)
