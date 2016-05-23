@@ -1,6 +1,7 @@
 ﻿using EniacSpi.Interfaces;
 using oclHashcatNet.Objects;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace EniacSpi.Interfaces
 {
@@ -11,12 +12,12 @@ namespace EniacSpi.Interfaces
         string Name { get; }
         string Address { get; }
 
-        IEnumerable<INetworkInformation> AvailableNetworks { get; }
-        IEnumerable<IHostInformation> AvailableTargetHosts { get; }
+        IList<INetworkInformation> AvailableNetworks { get; }
+        IList<IHostInformation> AvailableTargetHosts { get; }
         INetworkInformation SelectedNetwork { get; set; }
         IHostInformation SelectedTargetHost { get; set; }
 
-        void StartCracking();
+        Task StartCracking();
         void StopCracking();
 
         bool IsConnected { get; }

@@ -10,6 +10,7 @@ using EniacSpi.Interfaces;
 using EniacSpi.Objects;
 using System.Net;
 using System.Web.Helpers;
+using System.Threading.Tasks;
 
 namespace EniacSpi.Controllers
 {
@@ -47,7 +48,6 @@ namespace EniacSpi.Controllers
                 AvailableTargetHostsDropDownList = availableTargetHostDropDownList ?? Enumerable.Empty<SelectListItem>(),
                 SelectedNetwork = host.SelectedNetwork ?? nullSelectedNetwork,
                 SelectedTargetHost = host.SelectedTargetHost ?? nullSelectedTargetHost
-                
             };
 
             return View(model);
@@ -163,7 +163,7 @@ namespace EniacSpi.Controllers
             return RedirectToAction("Index", new { Name = Name });
         }
 
-        public ActionResult StartCracking(string Name)
+        public async Task<ActionResult> StartCracking(string Name)
         {
             var host = HostManager.Current.GetHost(Name);
 
@@ -171,7 +171,7 @@ namespace EniacSpi.Controllers
                 return RedirectToAction("Index", new { Name = Name });
 
             //start cracking!!
-            host.StartCracking();
+            await host.StartCracking();
 
             return RedirectToAction("Index", new { Name = Name });
         }

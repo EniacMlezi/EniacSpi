@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using oclHashcatNet.Objects;
 using System.IO;
+using System.Web;
+using Dropbox.Api;
 
 namespace EniacSpi.Objects
 {
@@ -17,6 +19,12 @@ namespace EniacSpi.Objects
             this.Socket = socket;
             this.Name = name;
             this.WPAcrack = new WPAcrack();
+
+            AvailableNetworks = new List<INetworkInformation>();
+            AvailableTargetHosts = new List<IHostInformation>();
+            AvailableNetworks.Add(new NetworkInformation() { SSID = "testSSID", MAC = "TEST-AABBCC-DD1234", Security = "WPA/WPA2(test)", Signal = 10, CrackProgressStatus = 0, CrackProgressEnd = 1, IsCracking = false });
+            this.SelectedNetwork = AvailableNetworks.FirstOrDefault();
+            AvailableTargetHosts.Add(new HostInformation { MAC = "TEST-AABBCC-DD1235" });
         }
 
         public WPAcrack WPAcrack { get; }
@@ -31,54 +39,34 @@ namespace EniacSpi.Objects
             }
         }
 
-        public IEnumerable<INetworkInformation> AvailableNetworks
-        {
-            get
-            {
-                var availableNetworks = new List<INetworkInformation>();
-                availableNetworks.Add(new NetworkInformation() { SSID = "testSSID", MAC = "TEST-AABBCC-DD1234", Security = "WPA/WPA2(test)", Signal = 10, CrackProgressStatus = 3, CrackProgressEnd = 10, IsCracking = true });
-                this.SelectedNetwork = availableNetworks.FirstOrDefault();
-                return availableNetworks;
-            }
-        }
+        public IList<INetworkInformation> AvailableNetworks { get; }
 
-        public IEnumerable<IHostInformation> AvailableTargetHosts
-        {
-            get
-            {
-                var availableTargetHosts = new List<IHostInformation>();
-                availableTargetHosts.Add(new HostInformation { MAC= "TEST-AABBCC-DD1235" });
-                return availableTargetHosts;
-            }
-        }
+        public IList<IHostInformation> AvailableTargetHosts { get; }
 
         public IHostInformation SelectedTargetHost { get; set; }
 
-        public INetworkInformation SelectedNetwork
-        {
-            get
-            {
-                return new NetworkInformation() { SSID = "testSSID", MAC = "TEST-AABBCC-DD1234", Security = "WPA/WPA2(test)", Signal = 10, CrackProgressEnd = 100, CrackProgressStatus = 32, IsCracking = true  };
-            }
+        public INetworkInformation SelectedNetwork { get; set; }
 
-            set
-            {
-                
-            }
-        }
-
-        public void StartCracking()
+        public async Task StartCracking()
         {
             // download /this.Name/this.SelectedNetwork.MAC/capture.extension as tempCapture.extension to C:/Hashcat/
+            var dropboxClient = HttpContext.Current.Application["DropboxClient"] as DropboxClient;
 
-            //ensure the correct capture file is in place
-            if (File.Exists(@"c:\Hashcat\capture.hccap"))
+            using (var response = await dropboxClient.Files.DownloadAsync(new Dropbox.Api.Files.DownloadArg(String.Format("/{0}/{1}/tempCapture.hccap", this.Name, this.SelectedNetwork.MAC))))
             {
-                File.Delete(@"c:\Hashcat\capture.hccap");
+                var contentBytes = await response.GetContentAsByteArrayAsync();
+                FileStream fileStream = System.IO.File.Create(@"c:\Hashcat\tempCapture.hccap", (int)contentBytes.Length);
+                fileStream.Write(contentBytes, 0, contentBytes.Length);
             }
-            File.Move(@"c:\Hashcat\tempCapture.hccap", @"c:\Hashcat\capture.hccap");
 
-            //start cracking
+            // ensure the correct capture file is in place
+            if (System.IO.File.Exists(@"c:\Hashcat\capture.hccap"))
+            {
+                System.IO.File.Delete(@"c:\Hashcat\capture.hccap");
+            }
+            System.IO.File.Move(@"c:\Hashcat\tempCapture.hccap", @"c:\Hashcat\capture.hccap");
+
+            // start cracking
             this.WPAcrack.Start();
         }
 
