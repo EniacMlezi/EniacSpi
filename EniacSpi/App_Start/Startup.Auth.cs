@@ -58,11 +58,11 @@ namespace EniacSpi
             //   appId: "",
             //   appSecret: "");
 
-            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            {
-                ClientId = "386297359291-295ft36ca9u1lp2leki8mv1g8iqhjvel.apps.googleusercontent.com",
-                ClientSecret = "JQtIh4sIn3vVR6zfvwRkd4i3"
-            });
+            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            //{
+            //    ClientId = "",
+            //    ClientSecret = ""
+            //});
         }
     }
 }

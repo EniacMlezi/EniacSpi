@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EniacSpi", "EniacHome\EniacSpi.csproj", "{B875D32A-353F-4B26-BB27-90C4DEB50728}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EniacSpi", "EniacSpi\EniacSpi.csproj", "{B875D32A-353F-4B26-BB27-90C4DEB50728}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "oclHashcatNet", "oclHashcatNet\oclHashcatNet.csproj", "{B3D40594-E73A-4F30-AF9F-8EA811C146DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{B875D32A-353F-4B26-BB27-90C4DEB50728}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B875D32A-353F-4B26-BB27-90C4DEB50728}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B875D32A-353F-4B26-BB27-90C4DEB50728}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3D40594-E73A-4F30-AF9F-8EA811C146DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3D40594-E73A-4F30-AF9F-8EA811C146DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3D40594-E73A-4F30-AF9F-8EA811C146DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3D40594-E73A-4F30-AF9F-8EA811C146DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

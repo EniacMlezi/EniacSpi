@@ -1,0 +1,99 @@
+﻿@using EniacSpi.Objects
+@model EniacSpi.Models.HostViewModel
+
+@section Scripts{
+
+    @if(!String.IsNullOrEmpty(ViewBag.Message))
+    {
+    <script type="text/javascript">
+        (function() {
+            alert('@ViewBag.Message');
+        } ());
+    </script>
+    }
+    <script type="text/javascript">
+        function CheckSelectedNetwork(){
+            if( (@Html.Raw(Model.SelectedNetwork != null).ToString().ToLower()) ) {
+                if('@Html.Raw(Model.SelectedNetwork.MAC)' != $('#NetworkDropDownList').find("option:selected").val()) {
+                    $('#SelectNetworkButton').attr('onclick', 'SelectNetworkButton.click()');
+                    $('#SelectNetworkButton').removeClass('disabled');
+
+                    $('#NetworkInfiltration').unbind();
+                    $('#NetworkInfiltration').addClass('disabled');
+
+                    $('#TargetHostInformation').unbind();
+                    $('#TargetHostInformation').addClass('disabled');
+
+                    $('#TargetHostTraffic').unbind();
+                    $('#TargetHostTraffic').addClass('disabled');
+                }
+                else
+                {
+                    $('#SelectNetworkButton').attr('onclick', '');
+                    $('#SelectNetworkButton').addClass('disabled');
+
+                    $('#NetworkInfiltration').bind();
+                    $('#NetworkInfiltration').removeClass('disabled');
+
+                    $('#TargetHostInformation').bind();
+                    $('#TargetHostInformation').removeClass('disabled');
+
+                    $('#TargetHostTraffic').bind();
+                    $('#TargetHostTraffic').removeClass('disabled');
+                }
+            }
+        }
+
+        (function () {
+            CheckSelectedNetwork();
+
+            $('#NetworkDropDownList').change(function (e) {
+
+                $('#NetworkInformation').load('@Url.Action("NetworkInformation", "Host", new { Name=Model.Name})' + '&selectedMAC=' + $(this).find("option:selected").val(), CheckSelectedNetwork);
+                $('#NetworkInfiltration').load('@Url.Action("NetworkInfiltration", "Host", new { Name = Model.Name})' + '&selectedMAC=' + $(this).find("option:selected").val());
+            });
+
+            $('#TargetHostDropDownList').change(function () {
+                $('#TargetHostInformation').load('@Url.Action("TargetHostInformation", "Host", new { Name=Model.Name})' + '&selectedMAC=' + $('#TargetHostDropDownList option:selected').val());
+            });
+
+        }());
+    </script>
+}
+
+<h3>Host - @Model.Name</h3>
+<hr />
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-6">
+            <h4>Network selection</h4>
+            @Html.DropDownList("NetworkDropDownList", Model.AvailableNetworkDropDownList, "--Select a target network--")
+            <div id="NetworkInformation">
+                @Html.Action("NetworkInformation", "Host", new { Name = Model.Name, selectedMAC = Model.SelectedNetwork.MAC} ?? null)
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <h4>Network infiltration</h4>
+            <div id="NetworkInfiltration">
+                @Html.Action("NetworkInfiltration", "Host", new { Name = Model.Name, selectedMAC = Model.SelectedNetwork.MAC ?? null })
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <h4>Target Host selection</h4>
+            @Html.DropDownList("TargetHostDropDownList", Model.AvailableTargetHostsDropDownList, "--Select a target host--")
+            <div id="TargetHostInformation">
+                @Html.Action("TargetHostInformation", "Host", new { Name = Model.Name, selectedMAC = (Model.SelectedTargetHost != null) ? Model.SelectedTargetHost.MAC : null })
+            </div>
+        </div>
+        <div class="col-md-8">
+            <h4>Target Host traffic</h4>
+            <div id="TargetHostTraffic">
+            </div>
+            <!--Big box o' dank traffic and a solution to save packages goes here-->
+        </div>
+    </div>
+</div>

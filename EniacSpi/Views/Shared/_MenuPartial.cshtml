@@ -6,8 +6,8 @@
 <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Board" ? "active" : "")">
     <a href=@Url.Action("Index", "Board", new { area = ""})><span class="glyphicon glyphicon-th-large pull-left"></span>MyBoard</a>
 </li>
-<li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Module" && !Request.Url.ToString().Contains("Admin") ? "active" : "")">
-    <a href=@Url.Action("Index", "Module", new { area = ""})><span class="glyphicon glyphicon-list-alt pull-left"></span>Modules</a>
+<li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Host" && !Request.Url.ToString().Contains("Admin") ? "active" : "")">
+    <a href=@Url.Action("List", "Host", new { area = ""})><span class="glyphicon glyphicon-list-alt pull-left"></span>Hosts</a>
 </li>
 <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Settings" ? "active" : "")">
     <a href=@Url.Action("Index", "Settings", new { area = ""})><span class="glyphicon glyphicon-cog pull-left"></span>Settings</a>

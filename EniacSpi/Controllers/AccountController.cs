@@ -59,26 +59,30 @@ namespace EniacSpi.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            List<ApplicationUser> users = UserManager.Users.ToList();
-            List<LoginViewUserModel> model = users.Select(user => new LoginViewUserModel { UserName = user.UserName, Id = user.Id }).ToList();
+            //    List<ApplicationUser> users = UserManager.Users.ToList();
+            //    List<LoginViewUserModel> model = users.Select(user => new LoginViewUserModel { UserName = user.UserName, Id = user.Id }).ToList();
+
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                return Redirect(Url.Action("Index", "Home"));
+            }
 
             ViewBag.ReturnUrl = returnUrl;
-            return View(model);
+            return View();
         }
 
         //
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
-        public async Task<ActionResult> Login(List<LoginViewUserModel> model, string UserIndex, string returnUrl)
+        public async Task<ActionResult> Login(LoginViewUserModel model, string returnUrl)
         {
-            int userIndex = int.Parse(UserIndex);
             //if (!ModelState.IsValid)
             //{
             //    return View(model);
             //}
 
-            ApplicationUser user = await UserManager.FindByNameAsync(model[userIndex].UserName);
+            ApplicationUser user = await UserManager.FindByNameAsync(model.UserName);
             if (user != null)
             {
                 if (!user.AccountConfirmed)
@@ -99,9 +103,9 @@ namespace EniacSpi.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            if (!string.IsNullOrEmpty(model[userIndex].Password))
+            if (!string.IsNullOrEmpty(model.Password))
             {
-                SignInStatus result = await SignInManager.PasswordSignInAsync(model[userIndex].UserName, model[userIndex].Password, model[userIndex].RememberMe, shouldLockout: false);
+                SignInStatus result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
                 switch (result)
                 {
                     case SignInStatus.Success:
@@ -109,7 +113,7 @@ namespace EniacSpi.Controllers
                     case SignInStatus.LockedOut:
                         return View("Lockout");
                     case SignInStatus.RequiresVerification:
-                        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model[userIndex].RememberMe });
+                        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                     case SignInStatus.Failure:
                     default:
                         ModelState.AddModelError("failedLogin", "Invalid login attempt.");
@@ -451,8 +455,6 @@ namespace EniacSpi.Controllers
 
         //
         // POST: /Account/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);

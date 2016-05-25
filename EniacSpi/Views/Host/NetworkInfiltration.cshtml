@@ -1,0 +1,60 @@
+﻿@model EniacSpi.Models.HostNetworkInfiltrationModel
+
+
+<table>
+    <tr>
+        <td style="padding-right:20px">
+            <b>Progress</b>
+        </td>
+        <td>
+            <progress value="@Model.CrackProgressStatus" max="@Model.CrackProgressEnd"></progress>
+        </td>
+    </tr>
+
+    <tr>
+        <td style="padding-right:20px">
+            <b>@Html.DisplayNameFor(model => model.Password)</b>
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.Password)
+        </td>
+    </tr>
+</table>
+
+@{
+    var State = Model.IsCracking ? "Stop" : "Start";
+}
+<br />
+<script type="text/javascript">
+    currentState = "@State";
+    function errorHandler(result)
+    {
+        alert(result);
+    }
+
+    function crack()
+    {
+        $("#CrackBtn").unbind();
+        $("#CrackBtn").addClass("disabled");
+
+        $.ajax({
+            type: "GET",
+            url: "/Host/" + currentState+ "Cracking?Name=" + "@ViewBag.HostName",
+            cache: false,
+            data: { Name: "@ViewBag.HostName" },
+            success: function (result) {
+                if (currentState == "Start") {
+                    currentState = "Stop";
+                }
+                else {
+                    currentState = "Start";
+                }
+
+                $("#CrackBtn").text(currentState + " Cracking");
+                $("#CrackBtn").removeClass("disabled");
+                $("#CrackBtn").bind();
+            }
+        });
+    }
+</script>
+<a id="CrackBtn" class="btn btn-default" onclick="crack()">@State Cracking</a>

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using EniacSpi.Models;
 using System.Web.Script.Serialization;
 using EniacSpi.Objects;
+using System.Net.Sockets;
 
 namespace EniacSpi.Controllers
 {
@@ -14,10 +15,14 @@ namespace EniacSpi.Controllers
     {
         // GET: Board
         public ActionResult Index()
-        {   
-            var Modules = ModuleManager.Current.GetModules();
+        {
+            Socket sock = new Socket(SocketType.Stream, ProtocolType.Tcp);
 
-            var widgets = Modules.Select(x => new WidgetViewModel
+            HostManager.Current.Add(new Host(sock, "testHost"));
+            var hosts = HostManager.Current.GetHosts();           
+            
+
+            var widgets = hosts.Select(x => new WidgetViewModel
             {
                 Name = x.Name,
                 Address = x.Address,
