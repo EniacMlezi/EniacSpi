@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Dropbox.Api;
+using System;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Helpers;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -10,6 +14,7 @@ namespace EniacSpi
     {
         protected void Application_Start()
         {
+            Application["DropboxClient"] = new DropboxClient("gxr9u-7PkpAAAAAAAAAABwaRmUJXdxdqWgXiZ5x1CRp_qEC_9cb4p29xW69O6Gyb");
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

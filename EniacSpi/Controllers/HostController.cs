@@ -10,6 +10,7 @@ using EniacSpi.Interfaces;
 using EniacSpi.Objects;
 using System.Net;
 using System.Web.Helpers;
+using System.Threading.Tasks;
 
 namespace EniacSpi.Controllers
 {
@@ -47,7 +48,6 @@ namespace EniacSpi.Controllers
                 AvailableTargetHostsDropDownList = availableTargetHostDropDownList ?? Enumerable.Empty<SelectListItem>(),
                 SelectedNetwork = host.SelectedNetwork ?? nullSelectedNetwork,
                 SelectedTargetHost = host.SelectedTargetHost ?? nullSelectedTargetHost
-                
             };
 
             return View(model);
@@ -163,16 +163,15 @@ namespace EniacSpi.Controllers
             return RedirectToAction("Index", new { Name = Name });
         }
 
-        public ActionResult StartCracking(string Name)
+        public async Task<string> StartCracking(string Name)
         {
             var host = HostManager.Current.GetHost(Name);
 
             if (host == null || host.SelectedNetwork == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            
-            //start cracking!!
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError).ToString();
 
-            return new HttpStatusCodeResult(HttpStatusCode.Accepted);
+            //start cracking!!
+            return await host.StartCracking();
         }
 
         public ActionResult StopCracking(string Name)
@@ -180,11 +179,12 @@ namespace EniacSpi.Controllers
             var host = HostManager.Current.GetHost(Name);
 
             if (host == null || host.SelectedNetwork == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index", new { Name = Name });
 
             //stop cracking!!
+            host.StopCracking();
 
-            return new HttpStatusCodeResult(HttpStatusCode.Accepted);
+            return RedirectToAction("Index", new { Name = Name });
         }
     }
 }
