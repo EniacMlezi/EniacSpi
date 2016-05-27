@@ -124,3 +124,5 @@ C:\Users\larsg\OneDrive\Documenten\School\Project TOYHN\EniacSpi\EniacSpi\bin\Mi
 C:\Users\larsg\OneDrive\Documenten\School\Project TOYHN\EniacSpi\EniacSpi\bin\Zlib.Portable.xml
 C:\Users\larsg\OneDrive\Documenten\School\Project TOYHN\EniacSpi\EniacSpi\bin\Dropbox.Api.dll
 C:\Users\larsg\OneDrive\Documenten\School\Project TOYHN\EniacSpi\EniacSpi\bin\Dropbox.Api.xml
+C:\Users\larsg\OneDrive\Documenten\School\Project TOYHN\EniacSpi\EniacSpi\bin\Renci.SshNet.dll
+C:\Users\larsg\OneDrive\Documenten\School\Project TOYHN\EniacSpi\EniacSpi\bin\Renci.SshNet.xml

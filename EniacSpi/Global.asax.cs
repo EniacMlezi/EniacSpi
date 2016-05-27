@@ -10,10 +10,28 @@ using System.Web.Routing;
 
 namespace EniacSpi
 {
+    public static class DropboxEvents
+    {
+        private static event Action DropboxChangedEvent;
+
+        public static void DropboxChanged()
+        {
+            DropboxChangedEvent?.Invoke();
+        }
+        public static void OnDropboxChanged(Action action)
+        {
+            DropboxChangedEvent += action;
+        }
+    }
+
+
     public class MvcApplication : System.Web.HttpApplication
     {
+
         protected void Application_Start()
         {
+
+
             Application["DropboxClient"] = new DropboxClient("gxr9u-7PkpAAAAAAAAAABwaRmUJXdxdqWgXiZ5x1CRp_qEC_9cb4p29xW69O6Gyb");
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
