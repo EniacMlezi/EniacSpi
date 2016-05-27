@@ -70,13 +70,13 @@
             <h4>Network selection</h4>
             @Html.DropDownList("NetworkDropDownList", Model.AvailableNetworkDropDownList, "--Select a target network--")
             <div id="NetworkInformation">
-                @Html.Action("NetworkInformation", "Host", new { Name = Model.Name, selectedMAC = Model.SelectedNetwork.MAC} ?? null)
+                @Html.Action("NetworkInformation", "Host", new { Name = Model.Name, selectedMAC = (Model.SelectedNetwork != null) ? Model.SelectedNetwork.MAC : null })
             </div>
         </div>
         <div class="col-sm-6">
             <h4>Network infiltration</h4>
             <div id="NetworkInfiltration">
-                @Html.Action("NetworkInfiltration", "Host", new { Name = Model.Name, selectedMAC = Model.SelectedNetwork.MAC ?? null })
+                @Html.Action("NetworkInfiltration", "Host", new { Name = Model.Name, selectedMAC = (Model.SelectedNetwork != null) ? Model.SelectedNetwork.MAC : null })
             </div>
         </div>
     </div>
@@ -92,6 +92,7 @@
         <div class="col-md-8">
             <h4>Target Host traffic</h4>
             <div id="TargetHostTraffic">
+                @Html.Action("TargetHostTraffic", "Host", new { Name = Model.Name, selectedMAC = (Model.SelectedTargetHost != null) ? Model.SelectedTargetHost.MAC : null })
             </div>
             <!--Big box o' dank traffic and a solution to save packages goes here-->
         </div>
