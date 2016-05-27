@@ -126,3 +126,7 @@ C:\Users\larsg\OneDrive\Documenten\School\Project TOYHN\EniacSpi\EniacSpi\obj\De
 C:\Users\larsg\OneDrive\Documenten\School\Project TOYHN\EniacSpi\EniacSpi\obj\Debug\EniacSpi.dll
 C:\Users\larsg\OneDrive\Documenten\School\Project TOYHN\EniacSpi\EniacSpi\obj\Debug\EniacSpi.pdb
 C:\Users\larsg\OneDrive\Documenten\School\Project TOYHN\EniacSpi\EniacSpi\obj\Debug\EniacSpi.csprojResolveAssemblyReference.cache
+C:\Users\larsg\OneDrive\Documenten\School\Project TOYHN\EniacSpi\EniacSpi\bin\PacketDotNet.dll
+C:\Users\larsg\OneDrive\Documenten\School\Project TOYHN\EniacSpi\EniacSpi\bin\SharpPcap.dll
+C:\Users\larsg\OneDrive\Documenten\School\Project TOYHN\EniacSpi\EniacSpi\bin\PacketDotNet.xml
+C:\Users\larsg\OneDrive\Documenten\School\Project TOYHN\EniacSpi\EniacSpi\bin\SharpPcap.xml
