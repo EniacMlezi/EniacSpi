@@ -8,3 +8,8 @@ C:\Users\larsg\OneDrive\Documenten\School\Project TOYHN\EniacSpi\oclHashcatNet\b
 C:\Users\larsg\OneDrive\Documenten\School\Project TOYHN\EniacSpi\oclHashcatNet\obj\Debug\oclHashcatNet.csprojResolveAssemblyReference.cache
 C:\Users\larsg\OneDrive\Documenten\School\Project TOYHN\EniacSpi\oclHashcatNet\obj\Debug\oclHashcatNet.dll
 C:\Users\larsg\OneDrive\Documenten\School\Project TOYHN\EniacSpi\oclHashcatNet\obj\Debug\oclHashcatNet.pdb
+C:\Users\denni\OneDrive\Documenten\GitHubVisualStudio\EniacSpi\oclHashcatNet\bin\Debug\oclHashcatNet.dll
+C:\Users\denni\OneDrive\Documenten\GitHubVisualStudio\EniacSpi\oclHashcatNet\bin\Debug\oclHashcatNet.pdb
+C:\Users\denni\OneDrive\Documenten\GitHubVisualStudio\EniacSpi\oclHashcatNet\obj\Debug\oclHashcatNet.csprojResolveAssemblyReference.cache
+C:\Users\denni\OneDrive\Documenten\GitHubVisualStudio\EniacSpi\oclHashcatNet\obj\Debug\oclHashcatNet.dll
+C:\Users\denni\OneDrive\Documenten\GitHubVisualStudio\EniacSpi\oclHashcatNet\obj\Debug\oclHashcatNet.pdb

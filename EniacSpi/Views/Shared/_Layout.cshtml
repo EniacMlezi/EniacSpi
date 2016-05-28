@@ -34,8 +34,27 @@
         </div>
     </nav>
         <div class="container col-xs-12">
-            <div class="sub-container"> 
-                @RenderBody()
+            <div class="sub-container">
+                @if (Request.IsAuthenticated)
+                {
+                    <div class="col-xs-1" id="menu">
+                        <div class="container col-xs-12" id="menu-items">
+                            <ul>
+                                <li title="Settings"><a href="@Url.Action("Index", "Home")" class=""><span class="glyphicon glyphicon-home"></span></a></li>
+                                <li title="Settings"><a href="@Url.Action("Index", "Board")" class=""><span class="glyphicon glyphicon-tasks"></span></a></li>
+                                <li title="Settings"><a href="#" class=""><span class="glyphicon glyphicon-user"></span></a></li>
+                                <li title="Settings"><a href="#" class=""><span class="glyphicon glyphicon-cog"></span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xs-11">
+                        @RenderBody()
+                    </div>
+                } else
+                {
+                    @RenderBody()
+                }
+
             </div>            
         </div>
 
