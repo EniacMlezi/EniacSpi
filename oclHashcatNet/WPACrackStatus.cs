@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace oclHashcatNet.Extensions
 {
@@ -18,7 +19,7 @@ namespace oclHashcatNet.Extensions
         public float Speed { get; set; }
     }
 
-    public class WPACrackStatus
+    public class WPACrackStatus : INotifyPropertyChanged
     {
         public WPACrackStatus()
         {
@@ -29,5 +30,7 @@ namespace oclHashcatNet.Extensions
         public float Progress{ get; set; }
 
         public IList<GPUStatus> GPUs { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

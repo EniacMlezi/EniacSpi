@@ -71,7 +71,7 @@ namespace EniacSpi.Objects
             }
             catch (Exception ex)
             {
-                return String.Format("{0}: {1}", ex.HResult, ex.Message);
+                //return String.Format("{0}: {1}", ex.HResult, ex.Message);
             }
 
             // start cracking
