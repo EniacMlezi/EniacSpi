@@ -1,5 +1,22 @@
 ﻿
 @{
-    ViewBag.Title = "Home";
+    ViewBag.currentPage = "Home";
+    ViewBag.Home = true;
 }
 
+<div class="container" id="mainMenu">
+    <h2>Main menu</h2>
+    <hr />
+    <div class="col-xs-3" id="mainLog">
+        @foreach (dynamic log in ViewBag.Logs) {
+            <div id="log">
+                <h1>@log.Title</h1>
+                <ul>
+                    @foreach (dynamic value in log.Values) {
+                        <li>@value.Value</li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+</div>
