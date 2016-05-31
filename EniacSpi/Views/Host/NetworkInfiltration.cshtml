@@ -43,16 +43,22 @@
             cache: false,
             data: { Name: "@ViewBag.HostName" },
             success: function (result) {
-                if (currentState == "Start") {
-                    currentState = "Stop";
-                }
-                else {
-                    currentState = "Start";
-                }
+                if (result == "Success") {
 
-                $("#CrackBtn").text(currentState + " Cracking");
-                $("#CrackBtn").removeClass("disabled");
-                $("#CrackBtn").bind();
+
+                    if (currentState == "Start") {
+                        currentState = "Stop";
+                    }
+                    else {
+                        currentState = "Start";
+                    }
+
+                    $("#CrackBtn").text(currentState + " Cracking");
+                    $("#CrackBtn").removeClass("disabled");
+                    $("#CrackBtn").bind();
+                } else {
+                    alert(result);
+                }
             }
         });
     }

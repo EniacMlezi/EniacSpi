@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using EniacSpi.Models;
-using System.ComponentModel.Composition;
-using System.Collections;
 using EniacSpi.Interfaces;
 using EniacSpi.Objects;
 using System.Net;
-using System.Web.Helpers;
 using System.Threading.Tasks;
 
 namespace EniacSpi.Controllers
@@ -69,7 +64,7 @@ namespace EniacSpi.Controllers
             if (host == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var selectedNetwork = host.AvailableNetworks.Where(network => network.MAC == selectedMAC).FirstOrDefault();
+            var selectedNetwork = host.AvailableNetworks.FirstOrDefault(network => network.MAC == selectedMAC);
 
             HostNetworkInformationModel model = new HostNetworkInformationModel
             {
@@ -100,7 +95,7 @@ namespace EniacSpi.Controllers
             if (host == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var selectedNetwork = host.AvailableNetworks.Where(network => network.MAC == selectedMAC).FirstOrDefault();
+            var selectedNetwork = host.AvailableNetworks.FirstOrDefault(network => network.MAC == selectedMAC);
 
             var model = new HostNetworkInfiltrationModel
             {
@@ -132,7 +127,7 @@ namespace EniacSpi.Controllers
             if (host == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var selectedTargetHost = host.AvailableTargetHosts.Where(network => network.MAC == selectedMAC).FirstOrDefault();
+            var selectedTargetHost = host.AvailableTargetHosts.FirstOrDefault(network => network.MAC == selectedMAC);
 
             HostTargetHostInformationModel model = new HostTargetHostInformationModel
             {
@@ -155,10 +150,22 @@ namespace EniacSpi.Controllers
             var host = HostManager.Current.GetHost(Name);
 
             if (host == null)
-                return RedirectToAction("Index", new { Name = Name });
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
 
-            //host.SelectedNetwork.StopCracking
-            host.SelectedNetwork = host.AvailableNetworks.Where(x => x.MAC == selectedMAC).FirstOrDefault();
+            host.StopCracking();
+            host.SelectedNetwork = host.AvailableNetworks.FirstOrDefault(x => x.MAC == selectedMAC);
+
+            return RedirectToAction("Index", new { Name = Name });
+        }
+
+        public ActionResult SelectTargetHost(string Name, string selectedMAC)
+        {
+            var host = HostManager.Current.GetHost(Name);
+
+            if (host == null)
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            
+            host.SelectedTargetHost = host.AvailableTargetHosts.FirstOrDefault(x => x.MAC == selectedMAC);
 
             return RedirectToAction("Index", new { Name = Name });
         }
