@@ -10,11 +10,29 @@ using System.Web.Routing;
 
 namespace EniacSpi
 {
+    public static class DropboxEvents
+    {
+        private static event Action DropboxChangedEvent;
+
+        public static void DropboxChanged()
+        {
+            DropboxChangedEvent?.Invoke();
+        }
+        public static void OnDropboxChanged(Action action)
+        {
+            DropboxChangedEvent += action;
+        }
+    }
+
+
     public class MvcApplication : System.Web.HttpApplication
     {
+
         protected void Application_Start()
         {
-            Application["DropboxClient"] = new DropboxClient("gxr9u-7PkpAAAAAAAAAABwaRmUJXdxdqWgXiZ5x1CRp_qEC_9cb4p29xW69O6Gyb");
+
+
+            Application["DropboxClient"] = new DropboxClient("Zh6DFjG7MfAAAAAAAAAAB3_CItz3te1qllneUWKv46ItOMtmgmFYnGdYA4chJScr");
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
