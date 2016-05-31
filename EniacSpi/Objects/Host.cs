@@ -14,6 +14,8 @@ using Renci.SshNet.Common;
 using SharpPcap.LibPcap;
 using PacketDotNet;
 using System.Net;
+using Microsoft.AspNet.SignalR;
+using System.Collections.Concurrent;
 
 namespace EniacSpi.Objects
 {
@@ -26,9 +28,10 @@ namespace EniacSpi.Objects
             this.Socket = socket;
             this.Name = name;
             this.WPAcrack = new WPAcrack();
-
+            this.TrafficQueue = new ConcurrentQueue<PacketData>();
             AvailableNetworks = new List<INetworkInformation>();
             AvailableTargetHosts = new List<IHostInformation>();
+
             AvailableNetworks.Add(new NetworkInformation() { SSID = "testSSID", MAC = "TEST-AABBCC-DD1234", Security = "WPA/WPA2(test)", Signal = 10, CrackProgressStatus = 0, CrackProgressEnd = 1, IsCracking = false });
             this.SelectedNetwork = AvailableNetworks.FirstOrDefault();
             AvailableTargetHosts.Add(new HostInformation { MAC = "TEST-AABBCC-DD1235" });
@@ -39,6 +42,7 @@ namespace EniacSpi.Objects
         }
 
         public WPAcrack WPAcrack { get; }
+        public ConcurrentQueue<PacketData> TrafficQueue { get; private set; }
 
         public string Name { get; }
         public string Address
@@ -182,7 +186,7 @@ namespace EniacSpi.Objects
 
         private void Reader_OnPacketArrival(object sender, SharpPcap.CaptureEventArgs e)
         {
-            PacketCherryPick packetData = new PacketCherryPick();
+            PacketData packetData = new PacketData();
             packetData.Length = e.Packet.Data.Length;
             packetData.Time = e.Packet.Timeval.Date;
 
@@ -203,19 +207,9 @@ namespace EniacSpi.Objects
                 packetData.SourcePort = tcpPacket.SourcePort;
             }
 
-            //udpPacket etc
-            //now signal the cherry picked data to all clients
-        }
+            //udpPacket processing etc
 
-        private struct PacketCherryPick
-        {
-            public DateTime Time { get; set; }
-            public int Length { get; set; }
-            public IPAddress SourceIp { get; set; }
-            public IPAddress DestinationIp { get; set; }
-            public IPProtocolType Protocol { get; set; }
-            public int SourcePort { get; set; }
-            public int DestinationPort { get; set; }
+            this.TrafficQueue.Enqueue(packetData);
         }
 
         public bool IsConnected { get { return isConnected(this.Socket); } }

@@ -6,6 +6,7 @@ using EniacSpi.Interfaces;
 using EniacSpi.Objects;
 using System.Net;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace EniacSpi.Controllers
 {
@@ -88,6 +89,20 @@ namespace EniacSpi.Controllers
 
             return PartialView(model);
         }
+
+        public ActionResult SelectNetwork(string Name, string selectedMAC)
+        {
+            var host = HostManager.Current.GetHost(Name);
+
+            if (host == null)
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+
+            host.StopCracking();
+            host.SelectedNetwork = host.AvailableNetworks.FirstOrDefault(x => x.MAC == selectedMAC);
+
+            return RedirectToAction("Index", new { Name = Name });
+        }
+
         public ActionResult NetworkInfiltration(string Name, string selectedMAC)
         {
             var host = HostManager.Current.GetHost(Name);
@@ -119,6 +134,41 @@ namespace EniacSpi.Controllers
 
             return PartialView(model);
         }
+        public async Task<string> StartCracking(string Name)
+        {
+            var host = HostManager.Current.GetHost(Name);
+
+            if (host == null || host.SelectedNetwork == null)
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError).ToString();
+
+            //start cracking!!
+            return await host.StartCracking();
+        }
+
+        public ActionResult StopCracking(string Name)
+        {
+            var host = HostManager.Current.GetHost(Name);
+
+            if (host == null || host.SelectedNetwork == null)
+                return RedirectToAction("Index", new { Name = Name });
+
+            //stop cracking!!
+            host.StopCracking();
+
+            return RedirectToAction("Index", new { Name = Name });
+        }
+
+        public ActionResult SelectTargetHost(string Name, string selectedMAC)
+        {
+            var host = HostManager.Current.GetHost(Name);
+
+            if (host == null)
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            
+            host.SelectedTargetHost = host.AvailableTargetHosts.FirstOrDefault(x => x.MAC == selectedMAC);
+
+            return RedirectToAction("Index", new { Name = Name });
+        }
 
         public ActionResult TargetHostInformation(string Name, string selectedMAC)
         {
@@ -145,53 +195,34 @@ namespace EniacSpi.Controllers
             return PartialView(model);
         }
 
-        public ActionResult SelectNetwork(string Name, string selectedMAC)
+        public ActionResult TargetHostTraffic(string Name)
+        {
+            ViewBag.HostName = Name;
+            return View();
+        }
+
+        public void TargetHostTrafficReceived(string Name)
         {
             var host = HostManager.Current.GetHost(Name);
 
             if (host == null)
-                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
+            {
+                Response.StatusCode = 503; //?Trigger onError?
+                return;
+            }
 
-            host.StopCracking();
-            host.SelectedNetwork = host.AvailableNetworks.FirstOrDefault(x => x.MAC == selectedMAC);
-
-            return RedirectToAction("Index", new { Name = Name });
+            Response.ContentType = "text/event-stream";
+            do
+            {
+                PacketData packet;
+                if (host.TrafficQueue.TryDequeue(out packet))
+                {
+                    Response.Write("data:" + JsonConvert.SerializeObject(packet, Formatting.None) + "\n\n");
+                }
+                Response.Flush();
+                System.Threading.Thread.Sleep(1000);
+            } while (true);
         }
 
-        public ActionResult SelectTargetHost(string Name, string selectedMAC)
-        {
-            var host = HostManager.Current.GetHost(Name);
-
-            if (host == null)
-                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError);
-            
-            host.SelectedTargetHost = host.AvailableTargetHosts.FirstOrDefault(x => x.MAC == selectedMAC);
-
-            return RedirectToAction("Index", new { Name = Name });
-        }
-
-        public async Task<string> StartCracking(string Name)
-        {
-            var host = HostManager.Current.GetHost(Name);
-
-            if (host == null || host.SelectedNetwork == null)
-                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError).ToString();
-
-            //start cracking!!
-            return await host.StartCracking();
-        }
-
-        public ActionResult StopCracking(string Name)
-        {
-            var host = HostManager.Current.GetHost(Name);
-
-            if (host == null || host.SelectedNetwork == null)
-                return RedirectToAction("Index", new { Name = Name });
-
-            //stop cracking!!
-            host.StopCracking();
-
-            return RedirectToAction("Index", new { Name = Name });
-        }
     }
 }

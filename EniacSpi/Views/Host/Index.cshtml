@@ -92,7 +92,7 @@
         <div class="col-md-8">
             <h4>Target Host traffic</h4>
             <div id="TargetHostTraffic">
-                @Html.Action("TargetHostTraffic", "Host", new { Name = Model.Name, selectedMAC = (Model.SelectedTargetHost != null) ? Model.SelectedTargetHost.MAC : null })
+                @Html.Action("TargetHostTraffic", "Host", new { Name = Model.Name })
             </div>
             <!--Big box o' dank traffic and a solution to save packages goes here-->
         </div>

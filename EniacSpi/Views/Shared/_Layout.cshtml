@@ -51,7 +51,7 @@
                                     <li title="Settings"><a href="@Url.Action("Index", "Board")" class=""><span class="glyphicon glyphicon-tasks"></span></a></li>
                                     <li title="Settings"><a href="#" class=""><span class="glyphicon glyphicon-user"></span></a></li>
                                     <li title="Settings"><a href="#" class=""><span class="glyphicon glyphicon-cog"></span></a></li>
-                                    @if (ViewBag.Home)
+                                    @if (ViewBag.Home != null && ViewBag.Home)
                                     {
                                         <li title="Add Log/Note"><a href="#" class=""><span class="glyphicon glyphicon-plus"></span></a></li>
                                     }

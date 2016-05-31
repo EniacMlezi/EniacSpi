@@ -1,0 +1,21 @@
+﻿
+<br />
+
+<div id="TargetHostTraffic">
+    <ul>
+    </ul>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var es = new EventSource(@Url.Action("TargetHostTrafficReceived", "Host", new { Name = ViewBag.HostName }));
+        es.onmessage = function (e) {
+            var packet = JSON.parse(e.data)
+            //$("#TargetHostTraffic ul").append('<li>e.Length ..etc..</li>') //somehow add it into the list
+        };
+        es.onerror = function () {
+            console.log(arguments);
+        };
+    });
+
+</script>

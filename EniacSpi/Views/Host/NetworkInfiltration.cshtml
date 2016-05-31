@@ -27,10 +27,6 @@
 <br />
 <script type="text/javascript">
     currentState = "@State";
-    function errorHandler(result)
-    {
-        alert(result);
-    }
 
     function crack()
     {
@@ -39,7 +35,7 @@
 
         $.ajax({
             type: "GET",
-            url: "/Host/" + currentState+ "Cracking?Name=" + "@ViewBag.HostName",
+            url: "/EniacSpi/Host/" + currentState+ "Cracking",
             cache: false,
             data: { Name: "@ViewBag.HostName" },
             success: function (result) {
@@ -58,7 +54,14 @@
                     $("#CrackBtn").bind();
                 } else {
                     alert(result);
+                    $("#CrackBtn").removeClass("disabled");
+                    $("#CrackBtn").bind();
                 }
+            },
+            error: function (result) {
+                alert(result);
+                $("#CrackBtn").removeClass("disabled");
+                $("#CrackBtn").bind();
             }
         });
     }

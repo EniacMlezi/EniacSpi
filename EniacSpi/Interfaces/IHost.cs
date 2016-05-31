@@ -1,5 +1,8 @@
 ﻿using EniacSpi.Interfaces;
+using EniacSpi.Objects;
 using oclHashcatNet.Extensions;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,6 +11,7 @@ namespace EniacSpi.Interfaces
     public interface IHost
     {
         WPAcrack WPAcrack { get; }
+        ConcurrentQueue<PacketData> TrafficQueue { get; }
 
         string Name { get; }
         string Address { get; }
