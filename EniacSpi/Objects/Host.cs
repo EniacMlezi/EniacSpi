@@ -13,8 +13,6 @@ using Renci.SshNet;
 using Renci.SshNet.Common;
 using SharpPcap.LibPcap;
 using PacketDotNet;
-using System.Net;
-using Microsoft.AspNet.SignalR;
 using System.Collections.Concurrent;
 
 namespace EniacSpi.Objects
