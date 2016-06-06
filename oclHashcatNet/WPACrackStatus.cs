@@ -19,18 +19,29 @@ namespace oclHashcatNet.Extensions
         public float Speed { get; set; }
     }
 
-    public class WPACrackStatus : INotifyPropertyChanged
+    public class WPACrackStatus
     {
         public WPACrackStatus()
         {
-            GPUs = new List<GPUStatus>();
+            this._GPUs = new List<GPUStatus>();
+            this.condition = WPAcrackCondition.Stopped;
+            this.progress = 0f;
         }
 
-        public WPAcrackCondition Condition { get; set; }
-        public float Progress{ get; set; }
+        private WPAcrackCondition condition;
+        public WPAcrackCondition Condition { set { onPropertyChanged(this, new PropertyChangedEventArgs("GPUs")); condition = value; } get { return condition; } }
 
-        public IList<GPUStatus> GPUs { get; set; }
+        private float progress;
+        public float Progress{ get { return progress; } set { onPropertyChanged(this, new PropertyChangedEventArgs("GPUs")); progress = value; } }
+
+        private IList<GPUStatus> _GPUs;
+        public IList<GPUStatus> GPUs { get { return _GPUs; } set { onPropertyChanged(this, new PropertyChangedEventArgs("GPUs")); _GPUs = value; }}
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private void onPropertyChanged(object sender, PropertyChangedEventArgs ea)
+        {
+            this.PropertyChanged?.Invoke(sender, ea);
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using EniacSpi.Interfaces;
+using oclHashcatNet.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +42,14 @@ namespace EniacSpi.Models
         public int CrackProgressEnd { get; set; }
         public string Password { get; set; }
     }
+
+    public class HostNetworkInfiltrationStatusModel
+    {
+        public string Condition { get; set; }
+
+        public IEnumerable<GPUStatus> GPUs { get; set; }
+    }
+
 
     public class HostTargetHostInformationModel
     {

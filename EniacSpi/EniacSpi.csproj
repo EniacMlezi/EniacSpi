@@ -412,6 +412,8 @@
     <Content Include="Views\Host\NetworkInformation.cshtml" />
     <Content Include="Views\Host\TargetHostInformation.cshtml" />
     <Content Include="Views\Host\NetworkInfiltration.cshtml" />
+    <Content Include="Views\Host\TargetHostTraffic.cshtml" />
+    <Content Include="Views\Host\NetworkInfiltrationStatus.cshtml" />
     <Content Include="Views\Home\AddNotes.cshtml" />
   </ItemGroup>
   <ItemGroup>

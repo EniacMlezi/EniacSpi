@@ -12,6 +12,16 @@
     </script>
     }
     <script type="text/javascript">
+        $(function () {
+            var es = new EventSource(@Url.Action("NetworkInfiltrationStatusChanged", "Host", new { Name = ViewBag.HostName }));
+            es.onmessage = function (e) {
+                $('#NetworkInfiltrationStatus').load('@Url.Action("NetworkInfiltrationStatus", "Host", new { Name=Model.Name})');
+            };
+            es.onerror = function () {
+                console.log(arguments);
+            };
+        });
+
         function CheckSelectedNetwork(){
             if( (@Html.Raw(Model.SelectedNetwork != null).ToString().ToLower()) ) {
                 if('@Html.Raw(Model.SelectedNetwork.MAC)' != $('#NetworkDropDownList').find("option:selected").val()) {
@@ -57,6 +67,8 @@
                 $('#TargetHostInformation').load('@Url.Action("TargetHostInformation", "Host", new { Name=Model.Name})' + '&selectedMAC=' + $('#TargetHostDropDownList option:selected').val());
             });
 
+            //add infiltrationstatus
+
         }());
     </script>
 }
@@ -75,8 +87,15 @@
         </div>
         <div class="col-sm-6">
             <h4>Network infiltration</h4>
-            <div id="NetworkInfiltration">
-                @Html.Action("NetworkInfiltration", "Host", new { Name = Model.Name, selectedMAC = (Model.SelectedNetwork != null) ? Model.SelectedNetwork.MAC : null })
+            <div class="container-fluid">
+                <div class="row">
+                    <div id="col-xs-6 NetworkInfiltration">
+                        @Html.Action("NetworkInfiltration", "Host", new { Name = Model.Name, selectedMAC = (Model.SelectedNetwork != null) ? Model.SelectedNetwork.MAC : null })
+                    </div>
+                    <div id="col-xs-6 NetworkInfiltrationStatus">
+                        @Html.Action("NetworkInfiltrationStatus", "Host", new { Name = Model.Name })
+                    </div>
+                </div>
             </div>
         </div>
     </div>
