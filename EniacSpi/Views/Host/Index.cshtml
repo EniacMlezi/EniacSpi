@@ -20,7 +20,9 @@
                     $('#SelectNetworkButton').removeClass('disabled');
 
                     $('#NetworkInfiltration').unbind();
-                    $('#NetworkInfiltration').addClass('disabled');
+                    $('#NetworkInfiltration').addClass('disabled'); 
+                    $('#CrackBtn').attr('onclick', 'CrackBtn.click()');
+                    $('#CrackBtn').addClass('disabled');
 
                     $('#TargetHostInformation').unbind();
                     $('#TargetHostInformation').addClass('disabled');
@@ -35,6 +37,8 @@
 
                     $('#NetworkInfiltration').bind();
                     $('#NetworkInfiltration').removeClass('disabled');
+                    $('#CrackBtn').attr('onclick', '');
+                    $('#CrackBtn').removeClass('disabled');
 
                     $('#TargetHostInformation').bind();
                     $('#TargetHostInformation').removeClass('disabled');
