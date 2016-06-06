@@ -11,7 +11,9 @@
         var es = new EventSource(@Url.Action("TargetHostTrafficReceived", "Host", new { Name = ViewBag.HostName }));
         es.onmessage = function (e) {
             var packet = JSON.parse(e.data)
-            //$("#TargetHostTraffic ul").append('<li>e.Length ..etc..</li>') //somehow add it into the list
+            var item = document.createElement('li');
+            item.textContext = packet.Length;
+            $("#TargetHostTraffic ul").append(item);
         };
         es.onerror = function () {
             console.log(arguments);

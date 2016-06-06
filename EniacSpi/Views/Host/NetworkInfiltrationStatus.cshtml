@@ -1,22 +1,23 @@
 ﻿@model EniacSpi.Models.HostNetworkInfiltrationStatusModel
 
 <script type="text/javascript">
-    $(function () {
+    @*$(function () {
         var es = new EventSource(@Url.Action("NetworkInfiltrationStatusChanged", "Host", new { Name = ViewBag.HostName }));
         es.onmessage = function (e) {
-            var status = JSON.parse(e.data);
-
-            //$("#TargetHostTraffic ul").append('<li>e.Length ..etc..</li>') //somehow add it into the list
+            var table = $('InfiltrationStatus');
+            var Status = JSON.parse(e.data)
+            $.each(Status.GPUs, function (index, value) {
+                table.append('<tr> <td>' + value.Id + '</td> </tr>')
+            });
         };
         es.onerror = function () {
             console.log(arguments);
         };
-    });
-
+    });*@
 </script>
 
 <br />
-<table>
+<table id="InfiltrationStatus">
     <tr>
         <td colspan="2"><b>@Html.DisplayNameFor(model => model.Condition)</b></td>
         <td colspan="2" style="padding-left: 25px">@Html.DisplayFor(model => model.Condition)</td>
@@ -30,9 +31,9 @@
     </tr>
     @foreach (var gpu in Model.GPUs)
     {
-        <td>@Html.Raw(gpu.Id.ToString())</td>
-        <td style="padding-left: 25px">@Html.Raw(gpu.Load.ToString())</td>
-        <td style="padding-left: 25px">@Html.Raw(gpu.Speed.ToString())</td>
-        <td style="padding-left: 25px">@Html.Raw(gpu.Temperature.ToString())</td>
+        <td id="@Html.DisplayName(gpu.Id.ToString())">@Html.Raw(gpu.Id.ToString())</td>
+        <td id="@Html.DisplayName(gpu.Load.ToString())" style="padding-left: 25px">@Html.Raw(gpu.Load.ToString())</td>
+        <td id="@Html.DisplayName(gpu.Speed.ToString())" style="padding-left: 25px">@Html.Raw(gpu.Speed.ToString())</td>
+        <td id="@Html.DisplayName(gpu.Temperature.ToString())" style="padding-left: 25px">@Html.Raw(gpu.Temperature.ToString())</td>
     }
 </table>

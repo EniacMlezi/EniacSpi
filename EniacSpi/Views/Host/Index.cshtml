@@ -12,7 +12,15 @@
     </script>
     }
     <script type="text/javascript">
-        //function clientCrackStatusChanged event
+        $(function () {
+            var es = new EventSource(@Url.Action("NetworkInfiltrationStatusChanged", "Host", new { Name = ViewBag.HostName }));
+            es.onmessage = function (e) {
+                $('#NetworkInfiltrationStatus').load('@Url.Action("NetworkInfiltrationStatus", "Host", new { Name=Model.Name})');
+            };
+            es.onerror = function () {
+                console.log(arguments);
+            };
+        });
 
         function CheckSelectedNetwork(){
             if( (@Html.Raw(Model.SelectedNetwork != null).ToString().ToLower()) ) {

@@ -19,7 +19,7 @@ namespace oclHashcatNet.Extensions
         public float Speed { get; set; }
     }
 
-    public class WPACrackStatus : INotifyPropertyChanged
+    public class WPACrackStatus
     {
         public WPACrackStatus()
         {
@@ -29,14 +29,19 @@ namespace oclHashcatNet.Extensions
         }
 
         private WPAcrackCondition condition;
-        public WPAcrackCondition Condition { set { PropertyChanged(this, new PropertyChangedEventArgs("GPUs")); condition = value; } get { return condition; } }
+        public WPAcrackCondition Condition { set { onPropertyChanged(this, new PropertyChangedEventArgs("GPUs")); condition = value; } get { return condition; } }
 
         private float progress;
-        public float Progress{ get { return progress; } set { PropertyChanged(this, new PropertyChangedEventArgs("GPUs")); progress = value; } }
+        public float Progress{ get { return progress; } set { onPropertyChanged(this, new PropertyChangedEventArgs("GPUs")); progress = value; } }
 
         private IList<GPUStatus> _GPUs;
-        public IList<GPUStatus> GPUs { get { return _GPUs; } set { PropertyChanged(this, new PropertyChangedEventArgs("GPUs")); _GPUs = value; }}
+        public IList<GPUStatus> GPUs { get { return _GPUs; } set { onPropertyChanged(this, new PropertyChangedEventArgs("GPUs")); _GPUs = value; }}
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private void onPropertyChanged(object sender, PropertyChangedEventArgs ea)
+        {
+            this.PropertyChanged?.Invoke(sender, ea);
+        }
     }
 }

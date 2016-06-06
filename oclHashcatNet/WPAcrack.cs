@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -35,7 +37,6 @@ namespace oclHashcatNet.Extensions
 
         private void parseStatus(string statusOutput)
         {
-            WPACrackStatus tempStatus = new WPACrackStatus();
             string statusBlock;
 
             if (!statusOutput.Contains("STATUS") || !statusOutput.Contains("ENDSTATUS"))
@@ -44,19 +45,20 @@ namespace oclHashcatNet.Extensions
             statusBlock = statusOutput.Remove(0, statusOutput.IndexOf("STATUS")); //remove leading garbage
             statusBlock = statusBlock.Remove(statusBlock.IndexOf("ENDSTATUS")); // remove trailing garbage
             hcOutput.Clear();
+            IList<GPUStatus> tempGPUs = new List<GPUStatus>();
             foreach (string line in new LineReader(() => new StringReader(statusBlock)))
             {
                 if (line.Contains("Status."))
                 {
                     var tmp = line.Split(':');
-                    tempStatus.Condition = (WPAcrackCondition)Enum.Parse(typeof(WPAcrackCondition), tmp[1]);
+                    this.Status.Condition = (WPAcrackCondition)Enum.Parse(typeof(WPAcrackCondition), tmp[1]);
                 }
                 else if (line.Contains("Progress."))
                 {
                     var tmp = line.Split(':');
                     var progress = tmp[1].Remove(0, tmp[1].IndexOf("(") + 1); // remove leading garbage
                     progress = progress.Remove(progress.IndexOf("%")); // remove trailing garbarge
-                    tempStatus.Progress = float.Parse(progress);
+                    this.Status.Progress = float.Parse(progress);
                 }
                 else if (line.Contains("HWMon.GPU."))
                 {
@@ -67,10 +69,10 @@ namespace oclHashcatNet.Extensions
                     var temperature = int.Parse(values[1].Split('c')[0]);
                     var speed = int.Parse(values[2].Split('%')[0]);
 
-                    tempStatus.GPUs.Add(new GPUStatus { Id = id, Load = load, Temperature = temperature, Speed = speed });
+                    tempGPUs.Add(new GPUStatus { Id = id, Load = load, Temperature = temperature, Speed = speed });
                 }
             }
-            this.Status = tempStatus;       
+            this.Status.GPUs = tempGPUs;
         }
 
 
@@ -114,9 +116,6 @@ namespace oclHashcatNet.Extensions
             }
 
             //stopped.WaitOne();
-
-            //refresh status
-            this.Status = new WPACrackStatus();
         }
 
         private void HCOutputHandler(object sender, DataReceivedEventArgs e)
