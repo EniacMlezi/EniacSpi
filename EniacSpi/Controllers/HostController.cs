@@ -8,6 +8,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using oclHashcatNet.Extensions;
+using System;
 
 namespace EniacSpi.Controllers
 {
@@ -119,7 +120,7 @@ namespace EniacSpi.Controllers
                 {
                     CrackProgressStatus = selectedNetwork.CrackProgressStatus,
                     CrackProgressEnd = selectedNetwork.CrackProgressEnd,
-                    IsCracking = (host.WPAcrack.Status.Condition.ToString() == "Running") ? true : false,
+                    IsCracking = host.IsCracking,
                     Password = selectedNetwork.Password
                 };
             }
@@ -129,7 +130,7 @@ namespace EniacSpi.Controllers
                 {
                     CrackProgressEnd = nullSelectedNetwork.CrackProgressEnd,
                     CrackProgressStatus = nullSelectedNetwork.CrackProgressStatus,
-                    IsCracking = (host.WPAcrack.Status.Condition.ToString() == "Running") ? true : false,
+                    IsCracking = host.IsCracking,
                     Password = nullSelectedNetwork.Password
                 };
             }
@@ -160,7 +161,7 @@ namespace EniacSpi.Controllers
 
             if (host == null)
             {
-                Response.StatusCode = 503; //?Trigger onError?
+                Response.StatusCode = 503;
                 return;
             }
 
@@ -170,9 +171,19 @@ namespace EniacSpi.Controllers
                 WPACrackStatus status;
                 if (host.NetworkInfiltrationStatusQueue.TryDequeue(out status))
                 {
-                    Response.Write("data:" + JsonConvert.SerializeObject(status, Formatting.None) + "\n\n");
+                    HostNetworkInfiltrationStatusModel model = new HostNetworkInfiltrationStatusModel
+                    {
+                        Condition = status.Condition.ToString(),
+                        GPUs = status.GPUs
+                    };
+                    Response.Write("data:" + JsonConvert.SerializeObject(model, Formatting.None) + "\n\n");
                 }
-                Response.Flush();
+                try
+                {
+                    Response.Flush();
+                }
+                catch (Exception) { }
+                
                 System.Threading.Thread.Sleep(1000);
             } while (true);
         }
@@ -251,7 +262,7 @@ namespace EniacSpi.Controllers
 
             if (host == null)
             {
-                Response.StatusCode = 503; //?Trigger onError?
+                Response.StatusCode = 503;
                 return;
             }
 

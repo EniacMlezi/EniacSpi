@@ -24,7 +24,7 @@ namespace EniacSpi.Interfaces
 
         Task<string> StartCracking();
         void StopCracking();
-        bool IsCracking { get; set; }
+        bool IsCracking { get; }
 
         bool IsConnected { get; }
     }

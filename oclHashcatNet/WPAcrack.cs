@@ -114,8 +114,6 @@ namespace oclHashcatNet.Extensions
                 hcBruteForceProcess.WaitForExit();
                 hcBruteForceProcess.Close();
             }
-
-            //stopped.WaitOne();
         }
 
         private void HCOutputHandler(object sender, DataReceivedEventArgs e)

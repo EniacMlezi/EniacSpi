@@ -30,12 +30,12 @@ namespace EniacSpi.Objects
             this.NetworkInfiltrationStatusQueue = new ConcurrentQueue<WPACrackStatus>();
             AvailableNetworks = new List<INetworkInformation>();
             AvailableTargetHosts = new List<IHostInformation>();
+            this.WPAcrack.Status.PropertyChanged += Status_PropertyChanged;
 
             AvailableNetworks.Add(new NetworkInformation() { SSID = "testSSID", MAC = "TEST-AABBCC-DD1234", Security = "WPA/WPA2(test)", Signal = 10, CrackProgressStatus = 0, CrackProgressEnd = 1 });
             this.SelectedNetwork = AvailableNetworks.FirstOrDefault();
             AvailableTargetHosts.Add(new HostInformation { MAC = "TEST-AABBCC-DD1235" });
             this.SelectedTargetHost = AvailableTargetHosts.FirstOrDefault();
-            this.WPAcrack.Status.PropertyChanged += Status_PropertyChanged;
 
             this.connectionInfo = new ConnectionInfo("192.168.2.14", 22, "root", new PasswordAuthenticationMethod("root", "toor"));
             StartPoison();
@@ -84,7 +84,7 @@ namespace EniacSpi.Objects
                 }
                 catch (SocketException ex)
                 {
-                   // return $"{ex.HResult}: Target machine actively refused SSH connection";
+                    //return $"{ex.HResult}: Target machine actively refused SSH connection";
                 }
                 catch (SshAuthenticationException ex)
                 {
@@ -112,18 +112,17 @@ namespace EniacSpi.Objects
             }
             catch (ApiException<DownloadError.Path> ex)
             {
-                //return String.Format("{0}: The hccap file does not exist in the dropbox archive. Try again later.", ex.HResult);
+               // return String.Format("{0}: The hccap file does not exist in the dropbox archive. Try again later.", ex.HResult);
             }
             catch (Exception ex)
             {
-                //return String.Format("{0}: {1}", ex.HResult, ex.Message);
+               // return String.Format("{0}: {1}", ex.HResult, ex.Message);
             }
 
             //File.Move($@"C:\{this.Name}\{this.SelectedNetwork.MAC}\{this.SelectedTargetHost.MAC}\capture.hccap", $@"C:\Hashcat\cudaHashcat\capture.hccap");
 
             // start cracking
             this.WPAcrack.Start();
-            this.IsCracking = true;
 
             return "Success";
         }
@@ -131,10 +130,9 @@ namespace EniacSpi.Objects
         public void StopCracking()
         {
             this.WPAcrack.Stop();
-            this.IsCracking = false;
         }
 
-        public bool IsCracking { get; set; }
+        public bool IsCracking { get { return this.WPAcrack.Status.Condition == WPAcrackCondition.Running; } }
 
         public string StartPoison()
         {
@@ -184,7 +182,7 @@ namespace EniacSpi.Objects
                 reader.StartCapture();
                 fileStream.Close();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return;
             }

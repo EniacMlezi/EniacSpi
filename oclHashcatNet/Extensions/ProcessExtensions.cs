@@ -14,7 +14,7 @@ namespace oclHashcatNet.Extensions
             {
                 Process.GetProcessById(process.Id);
             }
-            catch (ArgumentException)
+            catch (Exception ex)
             {
                 return false;
             }
