@@ -14,7 +14,7 @@
 <body id="background">
     <nav class="navbar navbar-default navbar-fixed-top" id="navbar-style">
         <div class="navbar-header"id="navBrand" >
-            <a class="navbar-brand"  href="#"><img src="~/Content/Images/EniacLogo.png"/></a>            
+            <a class="navbar-brand"  href="@Url.Action("Index", "Home")"><img src="~/Content/Images/EniacLogo.png"/></a>            
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <div class="navbar-left">
@@ -53,7 +53,7 @@
                                     <li title="Settings"><a href="#" class=""><span class="glyphicon glyphicon-cog"></span></a></li>
                                     @if (ViewBag.Home != null && ViewBag.Home)
                                     {
-                                        <li title="Add Log/Note"><a href="#" class=""><span class="glyphicon glyphicon-plus"></span></a></li>
+                                        <li title="Add Log/Note"><a href="@Url.Action("AddNotes","Home")" class=""><span class="glyphicon glyphicon-plus"></span></a></li>
                                     }
                                 </ul>
                             </div>

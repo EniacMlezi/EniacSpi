@@ -1,0 +1,25 @@
+﻿@model EniacSpi.Models.NotesViewModel
+@{
+    ViewBag.currentPage = "Notes";
+}
+
+
+<div class="container" id="mainMenu">
+    <h2>Add Note</h2>
+    <hr />
+    <div class="col-xs-3" id="Notes">
+        @using (Html.BeginForm("Addnote","Home"))
+        {
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.Title, new { @class = "form-control", @placeholder = "Title", @required = true })
+            </div>
+            <div class="form-group">
+                @Html.TextAreaFor(m => m.Content, new { @class = "form-control", @placeholder = "Add your notes here!", @style = "resize: none", @rows = 25, @required = true})
+            </div>
+            <div class="form-group">
+                <button id="btnNotes" class="btn col-xs-12"><span class="glyphicon glyphicon-floppy-disk"></span>Save Note</button>
+            </div>
+        }
+        
+    </div>
+</div>

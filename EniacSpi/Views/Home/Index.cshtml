@@ -13,9 +13,15 @@
                 <h1>@log.Title</h1>
                 <ul>
                     @foreach (dynamic value in log.Values) {
-                        <li>@value.Value</li>
+                        if (@value.Value != "") {
+                            <li>@value.Value</li>
+                        }
                     }
                 </ul>
+                <div style="opacity: 0.2; font-size: 12px;">
+                    <label style="float:left; padding-left: 20px;">Added by: @log.MadeBy</label>
+                    <label style="float:right">Added on: @log.Entered</label>
+                </div>
             </div>
         }
     </div>
