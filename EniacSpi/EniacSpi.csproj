@@ -297,6 +297,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Areas\Admin\Models\UserViewModels.cs" />
     <Compile Include="Models\BoardViewModels.cs" />
+    <Compile Include="Models\HomeViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\HostViewModels.cs" />
@@ -305,6 +306,7 @@
     <Compile Include="Objects\HostInformation.cs" />
     <Compile Include="Objects\HostManager.cs" />
     <Compile Include="Objects\NetworkInformation.cs" />
+    <Compile Include="Objects\Note.cs" />
     <Compile Include="Objects\PacketData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -410,6 +412,7 @@
     <Content Include="Views\Host\NetworkInformation.cshtml" />
     <Content Include="Views\Host\TargetHostInformation.cshtml" />
     <Content Include="Views\Host\NetworkInfiltration.cshtml" />
+    <Content Include="Views\Home\AddNotes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
