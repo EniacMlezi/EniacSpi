@@ -23,13 +23,19 @@ namespace oclHashcatNet.Extensions
     {
         public WPACrackStatus()
         {
-            GPUs = new List<GPUStatus>();
+            this._GPUs = new List<GPUStatus>();
+            this.condition = WPAcrackCondition.Stopped;
+            this.progress = 0f;
         }
 
-        public WPAcrackCondition Condition { get; set; }
-        public float Progress{ get; set; }
+        private WPAcrackCondition condition;
+        public WPAcrackCondition Condition { set { PropertyChanged(this, new PropertyChangedEventArgs("GPUs")); condition = value; } get { return condition; } }
 
-        public IList<GPUStatus> GPUs { get; set; }
+        private float progress;
+        public float Progress{ get { return progress; } set { PropertyChanged(this, new PropertyChangedEventArgs("GPUs")); progress = value; } }
+
+        private IList<GPUStatus> _GPUs;
+        public IList<GPUStatus> GPUs { get { return _GPUs; } set { PropertyChanged(this, new PropertyChangedEventArgs("GPUs")); _GPUs = value; }}
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

@@ -1,0 +1,38 @@
+﻿@model EniacSpi.Models.HostNetworkInfiltrationStatusModel
+
+<script type="text/javascript">
+    $(function () {
+        var es = new EventSource(@Url.Action("NetworkInfiltrationStatusChanged", "Host", new { Name = ViewBag.HostName }));
+        es.onmessage = function (e) {
+            var status = JSON.parse(e.data);
+
+            //$("#TargetHostTraffic ul").append('<li>e.Length ..etc..</li>') //somehow add it into the list
+        };
+        es.onerror = function () {
+            console.log(arguments);
+        };
+    });
+
+</script>
+
+<br />
+<table>
+    <tr>
+        <td colspan="2"><b>@Html.DisplayNameFor(model => model.Condition)</b></td>
+        <td colspan="2" style="padding-left: 25px">@Html.DisplayFor(model => model.Condition)</td>
+    </tr>
+
+    <tr>
+        <th>Id</th>
+        <th style="padding-left: 25px">Load</th>
+        <th style="padding-left: 25px">Speed</th>
+        <th style="padding-left: 25px">Temperature</th>
+    </tr>
+    @foreach (var gpu in Model.GPUs)
+    {
+        <td>@Html.Raw(gpu.Id.ToString())</td>
+        <td style="padding-left: 25px">@Html.Raw(gpu.Load.ToString())</td>
+        <td style="padding-left: 25px">@Html.Raw(gpu.Speed.ToString())</td>
+        <td style="padding-left: 25px">@Html.Raw(gpu.Temperature.ToString())</td>
+    }
+</table>

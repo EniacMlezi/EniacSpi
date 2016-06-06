@@ -27,20 +27,28 @@ namespace EniacSpi.Objects
             this.Name = name;
             this.WPAcrack = new WPAcrack();
             this.TrafficQueue = new ConcurrentQueue<PacketData>();
+            this.NetworkInfiltrationStatusQueue = new ConcurrentQueue<WPACrackStatus>();
             AvailableNetworks = new List<INetworkInformation>();
             AvailableTargetHosts = new List<IHostInformation>();
 
-            AvailableNetworks.Add(new NetworkInformation() { SSID = "testSSID", MAC = "TEST-AABBCC-DD1234", Security = "WPA/WPA2(test)", Signal = 10, CrackProgressStatus = 0, CrackProgressEnd = 1, IsCracking = false });
+            AvailableNetworks.Add(new NetworkInformation() { SSID = "testSSID", MAC = "TEST-AABBCC-DD1234", Security = "WPA/WPA2(test)", Signal = 10, CrackProgressStatus = 0, CrackProgressEnd = 1 });
             this.SelectedNetwork = AvailableNetworks.FirstOrDefault();
             AvailableTargetHosts.Add(new HostInformation { MAC = "TEST-AABBCC-DD1235" });
             this.SelectedTargetHost = AvailableTargetHosts.FirstOrDefault();
+            this.WPAcrack.Status.PropertyChanged += Status_PropertyChanged;
 
             this.connectionInfo = new ConnectionInfo("192.168.2.14", 22, "root", new PasswordAuthenticationMethod("root", "toor"));
             StartPoison();
         }
 
+        private void Status_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            this.NetworkInfiltrationStatusQueue.Enqueue((WPACrackStatus)sender);
+        }
+
         public WPAcrack WPAcrack { get; }
         public ConcurrentQueue<PacketData> TrafficQueue { get; private set; }
+        public ConcurrentQueue<WPACrackStatus> NetworkInfiltrationStatusQueue { get; private set; }
 
         public string Name { get; }
         public string Address
@@ -76,20 +84,20 @@ namespace EniacSpi.Objects
                 }
                 catch (SocketException ex)
                 {
-                    return $"{ex.HResult}: Target machine actively refused SSH connection";
+                   // return $"{ex.HResult}: Target machine actively refused SSH connection";
                 }
                 catch (SshAuthenticationException ex)
                 {
-                    return $"{ex.HResult}: Failed to authenticate SSH request";
+                    //return $"{ex.HResult}: Failed to authenticate SSH request";
                 }
                 catch (Exception ex)
                 {
-                    return $"{ex.HResult}: Failed to start Poison attack";
+                    //return $"{ex.HResult}: Failed to start Poison attack";
                 }
             }
 
-            if (result != "Success")
-                return $"Could not capture a handshake for {this.SelectedNetwork.MAC}";
+            //if (result != "Success")
+                //return $"Could not capture a handshake for {this.SelectedNetwork.MAC}";
 
             // download /this.Name/this.SelectedNetwork.MAC/capture.extension as tempCapture.extension to C:/Hashcat/
             var dropboxClient = HttpContext.Current.Application["DropboxClient"] as DropboxClient;
@@ -104,14 +112,14 @@ namespace EniacSpi.Objects
             }
             catch (ApiException<DownloadError.Path> ex)
             {
-                return String.Format("{0}: The hccap file does not exist in the dropbox archive. Try again later.", ex.HResult);
+                //return String.Format("{0}: The hccap file does not exist in the dropbox archive. Try again later.", ex.HResult);
             }
             catch (Exception ex)
             {
                 //return String.Format("{0}: {1}", ex.HResult, ex.Message);
             }
 
-            File.Move($@"C:\{this.Name}\{this.SelectedNetwork.MAC}\{this.SelectedTargetHost.MAC}\capture.hccap", $@"C:\Hashcat\cudaHashcat\capture.hccap");
+            //File.Move($@"C:\{this.Name}\{this.SelectedNetwork.MAC}\{this.SelectedTargetHost.MAC}\capture.hccap", $@"C:\Hashcat\cudaHashcat\capture.hccap");
 
             // start cracking
             this.WPAcrack.Start();

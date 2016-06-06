@@ -7,6 +7,7 @@ using EniacSpi.Objects;
 using System.Net;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using oclHashcatNet.Extensions;
 
 namespace EniacSpi.Controllers
 {
@@ -23,7 +24,6 @@ namespace EniacSpi.Controllers
             Signal = 0,
             CrackProgressEnd = 1,
             CrackProgressStatus = 0,
-            IsCracking = false,
             Password = "N/A"
         };
 
@@ -112,28 +112,72 @@ namespace EniacSpi.Controllers
 
             var selectedNetwork = host.AvailableNetworks.FirstOrDefault(network => network.MAC == selectedMAC);
 
-            var model = new HostNetworkInfiltrationModel
-            {
-                CrackProgressEnd = nullSelectedNetwork.CrackProgressEnd,
-                CrackProgressStatus = nullSelectedNetwork.CrackProgressStatus,
-                IsCracking = nullSelectedNetwork.IsCracking,
-                Password = nullSelectedNetwork.Password
-            };
-
+            HostNetworkInfiltrationModel model;
             if (selectedNetwork != null)
             {
                 model = new HostNetworkInfiltrationModel
                 {
                     CrackProgressStatus = selectedNetwork.CrackProgressStatus,
                     CrackProgressEnd = selectedNetwork.CrackProgressEnd,
-                    IsCracking = selectedNetwork.IsCracking,
+                    IsCracking = (host.WPAcrack.Status.Condition.ToString() == "Running") ? true : false,
                     Password = selectedNetwork.Password
+                };
+            }
+            else
+            {
+                model = new HostNetworkInfiltrationModel
+                {
+                    CrackProgressEnd = nullSelectedNetwork.CrackProgressEnd,
+                    CrackProgressStatus = nullSelectedNetwork.CrackProgressStatus,
+                    IsCracking = (host.WPAcrack.Status.Condition.ToString() == "Running") ? true : false,
+                    Password = nullSelectedNetwork.Password
                 };
             }
             ViewBag.HostName = Name;
 
             return PartialView(model);
         }
+
+        public ActionResult NetworkInfiltrationStatus(string Name)
+        {
+            var host = HostManager.Current.GetHost(Name);
+
+            if (host == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            HostNetworkInfiltrationStatusModel model = new HostNetworkInfiltrationStatusModel()
+            {
+                Condition = host.WPAcrack.Status.Condition.ToString(),
+                GPUs = host.WPAcrack.Status.GPUs
+            };
+
+            return PartialView(model);
+        }
+
+        public void NetworkInfiltrationStatusChanged(string Name)
+        {
+            var host = HostManager.Current.GetHost(Name);
+
+            if (host == null)
+            {
+                Response.StatusCode = 503; //?Trigger onError?
+                return;
+            }
+
+            Response.ContentType = "text/event-stream";
+            do
+            {
+                WPACrackStatus status;
+                if (host.NetworkInfiltrationStatusQueue.TryDequeue(out status))
+                {
+                    Response.Write("data:" + JsonConvert.SerializeObject(status, Formatting.None) + "\n\n");
+                }
+                Response.Flush();
+                System.Threading.Thread.Sleep(1000);
+            } while (true);
+        }
+
+
         public async Task<string> StartCracking(string Name)
         {
             var host = HostManager.Current.GetHost(Name);
@@ -145,17 +189,17 @@ namespace EniacSpi.Controllers
             return await host.StartCracking();
         }
 
-        public ActionResult StopCracking(string Name)
+        public string StopCracking(string Name)
         {
             var host = HostManager.Current.GetHost(Name);
 
             if (host == null || host.SelectedNetwork == null)
-                return RedirectToAction("Index", new { Name = Name });
+                return new HttpStatusCodeResult(HttpStatusCode.InternalServerError).ToString();
 
             //stop cracking!!
             host.StopCracking();
 
-            return RedirectToAction("Index", new { Name = Name });
+            return "Success";
         }
 
         public ActionResult SelectTargetHost(string Name, string selectedMAC)
@@ -198,7 +242,7 @@ namespace EniacSpi.Controllers
         public ActionResult TargetHostTraffic(string Name)
         {
             ViewBag.HostName = Name;
-            return View();
+            return PartialView();
         }
 
         public void TargetHostTrafficReceived(string Name)

@@ -12,6 +12,7 @@ namespace EniacSpi.Interfaces
     {
         WPAcrack WPAcrack { get; }
         ConcurrentQueue<PacketData> TrafficQueue { get; }
+        ConcurrentQueue<WPACrackStatus> NetworkInfiltrationStatusQueue { get; }
 
         string Name { get; }
         string Address { get; }

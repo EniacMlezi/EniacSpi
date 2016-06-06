@@ -13,7 +13,6 @@ namespace EniacSpi.Interfaces
         string Security { get; set; }
         int Signal { get; set; }
         
-        bool IsCracking { get; set; }
         int CrackProgressStatus { get; set; }
         int CrackProgressEnd { get; set; }
         string Password { get; set; }
