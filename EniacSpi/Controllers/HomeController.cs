@@ -62,7 +62,7 @@ namespace EniacSpi.Controllers
         public dynamic getLogs()
         {
             string jsonString;
-            using (StreamReader stream = new StreamReader(@"c:\Test.json"))
+            using (StreamReader stream = new StreamReader(@"c:\Log.json"))
             {
                 jsonString = stream.ReadToEnd();
             }
