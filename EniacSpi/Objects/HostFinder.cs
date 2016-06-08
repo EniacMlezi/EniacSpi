@@ -22,24 +22,18 @@ namespace EniacSpi.Objects
         // Received data string.
         public StringBuilder sb = new StringBuilder();
     }
-    public class HostFinder : IHostFinder
+    public static class HostFinder
     {
-        public bool IsListening { get { return pauseEvent.WaitOne(0); } }
+        public static bool IsListening { get { return pauseEvent.WaitOne(0); } }
 
-        private Thread listener;
+        private static Thread listener = new Thread(new ThreadStart(StartListening));
 
-        public HostFinder()
-        {
-            listener = new Thread(startListening);
-            listener.Start();
-        }
-
-        public void StartListening()
+        public static void ResumeListening()
         {
             pauseEvent.Set();
         }
 
-        public void StopListening()
+        public static void PauseListening()
         {
             pauseEvent.Reset();
         }
@@ -47,7 +41,7 @@ namespace EniacSpi.Objects
         private static ManualResetEvent pauseEvent = new ManualResetEvent(false);
         private static ManualResetEvent allDone = new ManualResetEvent(false);
 
-        private static void startListening()
+        public static void StartListening()
         {
             // Establish the local endpoint for the socket.
             // The DNS name of the computer

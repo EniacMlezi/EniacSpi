@@ -4,6 +4,7 @@ using oclHashcatNet.Extensions;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace EniacSpi.Interfaces
@@ -15,7 +16,7 @@ namespace EniacSpi.Interfaces
         ConcurrentQueue<WPACrackStatus> NetworkInfiltrationStatusQueue { get; }
 
         string Name { get; }
-        string Address { get; }
+        IPEndPoint EndPoint { get; }
 
         IList<INetworkInformation> AvailableNetworks { get; }
         IList<IHostInformation> AvailableTargetHosts { get; }

@@ -54,7 +54,7 @@ namespace EniacSpi.Controllers
         public ActionResult List()
         {
             IEnumerable<IHost> hosts = HostManager.Current.GetHosts();
-            var model = hosts.Select(x => new HostListViewModel { Address = x.Address, Name = x.Name });
+            var model = hosts.Select(x => new HostListViewModel { Address = x.EndPoint.Address.ToString(), Name = x.Name });
 
             return View(model);
         }

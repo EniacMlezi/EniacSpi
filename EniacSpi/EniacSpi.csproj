@@ -281,7 +281,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\IHost.cs" />
-    <Compile Include="Interfaces\IHostFinder.cs" />
     <Compile Include="Interfaces\IHostInformation.cs" />
     <Compile Include="Interfaces\IHostManager.cs" />
     <Compile Include="Interfaces\INetworkInformation.cs" />

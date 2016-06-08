@@ -61,9 +61,6 @@
             $('#TargetHostDropDownList').change(function () {
                 $('#TargetHostInformation').load('@Url.Action("TargetHostInformation", "Host", new { Name=Model.Name})' + '&selectedMAC=' + $('#TargetHostDropDownList option:selected').val());
             });
-
-            //add infiltrationstatus
-
         }());
     </script>
 }

@@ -25,7 +25,7 @@ namespace EniacSpi.Controllers
             var widgets = hosts.Select(x => new WidgetViewModel
             {
                 Name = x.Name,
-                Address = x.Address,
+                Address = x.EndPoint.Address.ToString(),
                 PositionX = (Request.Cookies["Dashboard"] == null) ? null : Request.Cookies["Dashboard"][x.Name].Split(',')[0],
                 PositionY = (Request.Cookies["Dashboard"] == null) ? null : Request.Cookies["Dashboard"][x.Name].Split(',')[1]
             }).ToList();

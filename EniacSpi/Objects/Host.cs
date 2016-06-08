@@ -14,6 +14,7 @@ using Renci.SshNet.Common;
 using SharpPcap.LibPcap;
 using PacketDotNet;
 using System.Collections.Concurrent;
+using System.Net;
 
 namespace EniacSpi.Objects
 {
@@ -32,12 +33,7 @@ namespace EniacSpi.Objects
             AvailableTargetHosts = new List<IHostInformation>();
             this.WPAcrack.Status.PropertyChanged += Status_PropertyChanged;
 
-            AvailableNetworks.Add(new NetworkInformation() { SSID = "testSSID", MAC = "TEST-AABBCC-DD1234", Security = "WPA/WPA2(test)", Signal = 10, CrackProgressStatus = 0, CrackProgressEnd = 1 });
-            this.SelectedNetwork = AvailableNetworks.FirstOrDefault();
-            AvailableTargetHosts.Add(new HostInformation { MAC = "TEST-AABBCC-DD1235" });
-            this.SelectedTargetHost = AvailableTargetHosts.FirstOrDefault();
-
-            this.connectionInfo = new ConnectionInfo("192.168.2.14", 22, "root", new PasswordAuthenticationMethod("root", "toor"));
+            this.connectionInfo = new ConnectionInfo(this.EndPoint.Address.ToString(), 22, "root", new PasswordAuthenticationMethod("root", "toor"));
             StartPoison();
         }
 
@@ -51,12 +47,11 @@ namespace EniacSpi.Objects
         public ConcurrentQueue<WPACrackStatus> NetworkInfiltrationStatusQueue { get; private set; }
 
         public string Name { get; }
-        public string Address
+        public IPEndPoint EndPoint
         {
             get
             {
-                //return Socket.RemoteEndPoint.ToString();
-                return "test";
+                return this.Socket.RemoteEndPoint as IPEndPoint;
             }
         }
 

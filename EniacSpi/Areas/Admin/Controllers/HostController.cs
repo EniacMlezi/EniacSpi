@@ -21,7 +21,7 @@ namespace EniacSpi.Areas.Admin.Controllers
         public ActionResult List()
         {
             IEnumerable<IHost> hosts = HostManager.Current.GetHosts();
-            IEnumerable<HostListViewModel> model = hosts.Select(x => new HostListViewModel { Address = x.Address, Name = x.Name });
+            IEnumerable<HostListViewModel> model = hosts.Select(x => new HostListViewModel { Address = x.EndPoint.Address.ToString(), Name = x.Name });
             return View(model);
         }
 
