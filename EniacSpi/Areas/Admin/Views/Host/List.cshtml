@@ -25,3 +25,28 @@
 }
 
 </table>
+
+<script type="text/javascript">
+    var State = @ViewBag.State;
+    function listen() {
+        $.ajax({
+            type: "GET",
+            url: "/EniacSpi/Host/" + State+ "Listening",
+            cache: false,
+            success: function (result) {
+                    if (State == "Resume") {
+                        State = "Pause";
+                    }
+                    else {
+                        State = "Resume";
+                    }
+
+                    $("#ListenBtn").text(State + " Listening");
+            },
+            error: function (result) {
+                alert(result);
+            }
+        });
+    }
+</script>
+<a id="ListenBtn" class="btn btn-default" onclick="listen()">@ViewBag.State Listening</a>

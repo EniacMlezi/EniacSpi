@@ -38,7 +38,7 @@ namespace EniacSpi.Objects
             pauseEvent.Reset();
         }
 
-        private static ManualResetEvent pauseEvent = new ManualResetEvent(false);
+        private static ManualResetEvent pauseEvent = new ManualResetEvent(true);
         private static ManualResetEvent allDone = new ManualResetEvent(false);
 
         public static void StartListening()
@@ -56,11 +56,10 @@ namespace EniacSpi.Objects
             {
                 listener.Bind(localEndPoint);
                 listener.Listen(100);
-
-                pauseEvent.Reset();
                 while (true)
                 {
                     pauseEvent.WaitOne();
+                   
                     // Set the event to nonsignaled state.
                     allDone.Reset();
 
