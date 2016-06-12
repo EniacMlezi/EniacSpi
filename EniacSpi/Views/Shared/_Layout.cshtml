@@ -47,13 +47,17 @@
                         <div id="menu">
                             <div class="container col-xs-12" id="menu-items">
                                 <ul>
-                                    <li title="Settings"><a href="@Url.Action("Index", "Home")" class=""><span class="glyphicon glyphicon-home"></span></a></li>
-                                    <li title="Settings"><a href="@Url.Action("Index", "Board")" class=""><span class="glyphicon glyphicon-tasks"></span></a></li>
-                                    <li title="Settings"><a href="#" class=""><span class="glyphicon glyphicon-user"></span></a></li>
-                                    <li title="Settings"><a href="#" class=""><span class="glyphicon glyphicon-cog"></span></a></li>
+                                    <li title="Home"><a href="@Url.Action("Index", "Home", new { Area = ""})" class=""><span class="glyphicon glyphicon-home"></span></a></li>
+                                    <li title="Board"><a href="@Url.Action("Index", "Board", new { Area = ""})" class=""><span class="glyphicon glyphicon-dashboard"></span></a></li>
+                                    <li title="Hosts"><a href="@Url.Action("List", "Host", new { Area = ""})" class=""><span class="glyphicon glyphicon-tasks"></span></a></li>
+                                    @if (Request.GetOwinContext().Authentication.User.IsInRole("Administrator"))
+                                    {
+                                        <li title="Administrator"><a href="@Url.Action("Index", "Home", new { Area="Admin" })" class=""><span class="glyphicon glyphicon-cog"></span></a></li>
+                                    }
+                                    <li title="Settings"><a href="@Url.Action("Index", "Manage", new { Area = ""})" class=""><span class="glyphicon glyphicon-user"></span></a></li>
                                     @if (ViewBag.Home != null && ViewBag.Home)
                                     {
-                                        <li title="Add Log/Note"><a href="@Url.Action("AddNotes","Home")" class=""><span class="glyphicon glyphicon-plus"></span></a></li>
+                                        <li title="Add Log/Note"><a href="@Url.Action("AddNotes","Home", new { Area = ""})" class=""><span class="glyphicon glyphicon-plus"></span></a></li>
                                     }
                                 </ul>
                             </div>

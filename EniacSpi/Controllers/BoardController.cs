@@ -16,20 +16,15 @@ namespace EniacSpi.Controllers
         // GET: Board
         public ActionResult Index()
         {
-            Socket sock = new Socket(SocketType.Stream, ProtocolType.Tcp);
-
-            HostManager.Current.Add(new Host(sock, "testHost"));
-            var hosts = HostManager.Current.GetHosts();           
-            
+            var hosts = HostManager.Current.GetHosts();         
 
             var widgets = hosts.Select(x => new WidgetViewModel
             {
                 Name = x.Name,
                 Address = x.EndPoint.Address.ToString(),
-                PositionX = (Request.Cookies["Dashboard"] == null) ? null : Request.Cookies["Dashboard"][x.Name].Split(',')[0],
-                PositionY = (Request.Cookies["Dashboard"] == null) ? null : Request.Cookies["Dashboard"][x.Name].Split(',')[1]
+                PositionX = (Request.Cookies["Dashboard"][x.Name] == null) ? null : Request.Cookies["Dashboard"][x.Name].Split(',')[0],
+                PositionY = (Request.Cookies["Dashboard"][x.Name] == null) ? null : Request.Cookies["Dashboard"][x.Name].Split(',')[1]
             }).ToList();
-            
 
             return View(new WidgetListViewModel { Widgets = widgets });
         }

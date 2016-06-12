@@ -27,11 +27,11 @@
 </table>
 
 <script type="text/javascript">
-    var State = @ViewBag.State;
+    var State = "@ViewBag.State";
     function listen() {
         $.ajax({
             type: "GET",
-            url: "/EniacSpi/Host/" + State+ "Listening",
+            url: "/EniacSpi/Admin/Host/" + State+ "Listening",
             cache: false,
             success: function (result) {
                     if (State == "Resume") {

@@ -9,12 +9,9 @@ namespace EniacSpi.Areas.Admin.Controllers
 {
     public class HostController : Controller
     {
-        // GET: Admin/Module
-        public ActionResult Index(string Name)
+        public ActionResult Index()
         {
-            var host = HostManager.Current.GetHost(Name);
-
-            return View();
+            return RedirectToAction("List");
         }
 
         public ActionResult List()

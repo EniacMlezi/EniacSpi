@@ -16,8 +16,7 @@ namespace EniacSpi.Objects
         public HostManager()
         {
             Hosts = new List<IHost>();
-            Thread connectedListener = new Thread(CheckConnected);
-            //connectedListener.Start();
+            new Thread(CheckConnected).Start();
         }
 
         private static void CheckConnected()
@@ -29,7 +28,6 @@ namespace EniacSpi.Objects
                 {
                     if (!module.IsConnected)
                     {
-                        File.AppendAllText(@"C:\log.txt", System.DateTime.Now.ToString() + " -> Disconnected Module: " + module.Name + Environment.NewLine);
                         Current.Delete(module);
                     }
                 }
@@ -59,7 +57,7 @@ namespace EniacSpi.Objects
             if (HostManager.Current.GetHost(host.Name) == null)
             {
                 Hosts.Add(host);
-                File.AppendAllText(@"C:\log.txt", System.DateTime.Now.ToString() + " -> [ModuleManager] Added Module: " + host.Name + Environment.NewLine);
+                File.AppendAllText(@"C:\log.txt", System.DateTime.Now.ToString() + " -> [HostManager] Added Host: " + host.Name + Environment.NewLine);
             }
         }
 
@@ -79,6 +77,7 @@ namespace EniacSpi.Objects
         public void Delete(IHost module)
         {
             Hosts.Remove(module);
+            File.AppendAllText(@"C:\log.txt", System.DateTime.Now.ToString() + " -> [HostManager] Deleted Host: " + module.Name + Environment.NewLine);
         }
     }
 }

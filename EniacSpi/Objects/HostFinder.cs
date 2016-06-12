@@ -43,9 +43,14 @@ namespace EniacSpi.Objects
 
         public static void StartListening()
         {
+            new Thread(startListening).Start();
+        }
+
+        private static void startListening()
+        {
             // Establish the local endpoint for the socket.
             // The DNS name of the computer
-            IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 11000);
+            IPEndPoint localEndPoint = new IPEndPoint(IPAddress.Any, 11000);
 
             // Create a TCP/IP socket.
             Socket listener = new Socket(AddressFamily.InterNetwork,
@@ -74,7 +79,7 @@ namespace EniacSpi.Objects
             }
             catch (Exception ex)
             {
-                File.AppendAllText(@"C:\log.txt", System.DateTime.Now.ToString() + " -> [TcpModuleFinder]: " + Environment.NewLine + Environment.NewLine + ex.ToString() + Environment.NewLine + Environment.NewLine);
+                File.AppendAllText(@"C:\log.txt", System.DateTime.Now.ToString() + " -> [HostFinder]: " + Environment.NewLine + Environment.NewLine + ex.ToString() + Environment.NewLine + Environment.NewLine);
             }
         }
 
@@ -130,10 +135,10 @@ namespace EniacSpi.Objects
 
         private static void AddHost(StateObject state)
         {
-            string[] ModuleInfo = state.sb.ToString().Split('|');
+            string ModuleInfo = state.sb.ToString().Remove(state.sb.ToString().IndexOf("<EOF>"));
 
             // Create the host object.
-            IHost host = new Host(state.workSocket, ModuleInfo[0]);
+            IHost host = new Host(state.workSocket, ModuleInfo);
 
             HostManager.Current.Add(host);
         }
