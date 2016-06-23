@@ -24,26 +24,24 @@ namespace EniacSpi.Objects
     }
     public static class HostFinder
     {
-        public static bool IsListening { get { return pauseEvent.WaitOne(0); } }
+        public static bool IsListening { get { return started.WaitOne(0); } }
 
-        private static Thread listener = new Thread(new ThreadStart(StartListening));
-
-        public static void ResumeListening()
-        {
-            pauseEvent.Set();
-        }
-
-        public static void PauseListening()
-        {
-            pauseEvent.Reset();
-        }
-
-        private static ManualResetEvent pauseEvent = new ManualResetEvent(true);
         private static ManualResetEvent allDone = new ManualResetEvent(false);
+        private static ManualResetEvent started = new ManualResetEvent(false);
+
+        static HostFinder()
+        {
+            new Thread(startListening).Start();
+        }
+
+        public static void StopListening()
+        {
+            started.Reset();
+        }
 
         public static void StartListening()
         {
-            new Thread(startListening).Start();
+            started.Set();
         }
 
         private static void startListening()
@@ -63,8 +61,7 @@ namespace EniacSpi.Objects
                 listener.Listen(100);
                 while (true)
                 {
-                    pauseEvent.WaitOne();
-                   
+                    started.WaitOne();
                     // Set the event to nonsignaled state.
                     allDone.Reset();
 

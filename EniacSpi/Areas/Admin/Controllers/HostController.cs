@@ -18,19 +18,19 @@ namespace EniacSpi.Areas.Admin.Controllers
         {
             IEnumerable<IHost> hosts = HostManager.Current.GetHosts();
             IEnumerable<HostListViewModel> model = hosts.Select(x => new HostListViewModel { Address = x.EndPoint.Address.ToString(), Name = x.Name });
-            ViewBag.State = HostFinder.IsListening ? "Pause" : "Resume";
+            ViewBag.State = HostFinder.IsListening ? "Stop" : "Start";
 
             return View(model);
         }
 
-        public void ResumeListening()
+        public void startListening()
         {
-            HostFinder.PauseListening();
+            HostFinder.StartListening();
         }
 
         public void StopListening()
         {
-            HostFinder.ResumeListening();
+            HostFinder.StopListening();
         }
 
         public ActionResult Delete(string Name)

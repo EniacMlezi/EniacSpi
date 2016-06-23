@@ -28,23 +28,32 @@
 
 <script type="text/javascript">
     var State = "@ViewBag.State";
+    function ListeningUrl() {
+        if(State == "Start"){
+            return "@Url.Action("StartListening", "Host", new { Area = "Admin"} )";
+        }
+        else{
+            return "@Url.Action("StopListening", "Host", new { Area = "Admin" })";
+        }
+    }
+
     function listen() {
         $.ajax({
             type: "GET",
-            url: "/EniacSpi/Admin/Host/" + State+ "Listening",
+            url: ListeningUrl(),
             cache: false,
             success: function (result) {
-                    if (State == "Resume") {
-                        State = "Pause";
-                    }
-                    else {
-                        State = "Resume";
-                    }
+                if (State == "Start") {
+                    State = "Stop";
+                }
+                else {
+                    State = "Start";
+                }
 
-                    $("#ListenBtn").text(State + " Listening");
+                $("#ListenBtn").text(State + " Listening");
             },
-            error: function (result) {
-                alert(result);
+            error: function () {
+                alert("Something went wrong, you should go pay for software if this bothers you");
             }
         });
     }

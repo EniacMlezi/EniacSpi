@@ -22,8 +22,8 @@ namespace EniacSpi.Controllers
             {
                 Name = x.Name,
                 Address = x.EndPoint.Address.ToString(),
-                PositionX = (Request.Cookies["Dashboard"][x.Name] == null) ? null : Request.Cookies["Dashboard"][x.Name].Split(',')[0],
-                PositionY = (Request.Cookies["Dashboard"][x.Name] == null) ? null : Request.Cookies["Dashboard"][x.Name].Split(',')[1]
+                PositionX = ((Request.Cookies["Dashboard"] == null) || (Request.Cookies["Dashboard"][x.Name] == null)) ? null : Request.Cookies["Dashboard"][x.Name].Split(',')[0],
+                PositionY = ((Request.Cookies["Dashboard"] == null) || (Request.Cookies["Dashboard"][x.Name] == null)) ? null : Request.Cookies["Dashboard"][x.Name].Split(',')[1]
             }).ToList();
 
             return View(new WidgetListViewModel { Widgets = widgets });
